@@ -37,7 +37,7 @@ export const Header = () => {
         data-state={menuState && "active"}
         className={cn(
           "fixed z-20 w-full h-14 border-b transition-colors duration-150",
-          scrolled && "bg-background/50 backdrop-blur-xl"
+          scrolled && "bg-background/50 backdrop-blur-xl",
         )}
       >
         <div className="px-3 h-full transition-all duration-300">
@@ -61,8 +61,8 @@ export const Header = () => {
                   height={50}
                   width={50}
                   className="h-10 z-10 w-full dark:hidden block object-contain"
-                /> 
-                  Ecommerce
+                />
+                Ecommerce
               </Link>
 
               <Separator className="hidden lg:block" orientation="vertical" />
@@ -85,7 +85,7 @@ export const Header = () => {
                         className="text-muted-foreground hover:text-accent-foreground block duration-150"
                       >
                         <span>{item.name}</span>
-                      </Link>  
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -131,7 +131,7 @@ export const Header = () => {
             </div>
           </div>
         </div>
-      </nav> 
+      </nav>
     </header>
   );
 };

@@ -2,12 +2,10 @@ import { Outlet } from "react-router-dom";
 import { Header } from "@/components/header";
 
 export const UserLayout = () => (
-   <div className="flex flex-col min-h-screen w-full">
-      <Header />
-      <main className="flex-1">
-         <section className="h-screen flex items-center justify-center">
-            <Outlet />
-         </section>
-      </main>
-   </div>
+  <div className="min-h-screen w-full">
+    <Header />
+    <main className="flex-1 pt-14 px-3 rounded-sm md:px-8 lg:px-12">
+      <Outlet />
+    </main>
+  </div>
 );

@@ -121,3 +121,35 @@
     @apply bg-background text-foreground;
   }
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.slick-prev {
+  left: -15px !important;
+  z-index: 10;
+}
+
+.slick-next {
+  right: -15px !important;
+  z-index: 10;
+}
+
+/* Optional: smaller arrow buttons */
+.slick-prev:before,
+.slick-next:before {
+  font-size: 20px;
+}
+
+@media (max-width: 640px) {
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
+}

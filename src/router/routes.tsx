@@ -6,7 +6,7 @@ import { RouteGuard } from "./guards";
 import { NotFound } from "@/pages/NotFound";
 import Login from "@/features/auth/pages/Login";
 import SignUp from "@/features/auth/pages/SignUp";
-import VerifyOtp from "@/features/auth/pages/verifyOtp";
+import VerifyOtp from "@/features/auth/pages/VerifyOtp";
 
 export const routerPaths = createBrowserRouter([
   /* ================= 🌍 PUBLIC ================= */
