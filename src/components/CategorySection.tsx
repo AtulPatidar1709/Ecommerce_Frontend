@@ -23,20 +23,20 @@ const categories: CategoryItemType[] = [
 const CategoryItem = ({ label, icon }: CategoryItemType) => {
   return (
     <div className="flex flex-col items-center">
-      <Card className="rounded-2xl border-none shadow-md hover:shadow-lg transition">
+      <Card className="rounded-full border-none shadow-md hover:shadow-lg transition">
         <CardContent className="flex flex-col items-center p-4">
-          <div className="w-20 h-20 rounded-xl bg-white flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center">
             <img
               src={icon}
               alt={label}
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="mt-2 text-sm font-medium text-gray-700 text-center">
-            {label}
-          </span>
         </CardContent>
       </Card>
+      <span className="mt-2 text-sm font-medium text-gray-700 text-center">
+        {label}
+      </span>
     </div>
   );
 };
@@ -55,11 +55,11 @@ const CategorySlider = ({ items }: { items: CategoryItemType[] }) => {
       },
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 4 },
+        settings: { slidesToShow: 5 },
       },
       {
         breakpoint: 768,
-        settings: { slidesToShow: 3 },
+        settings: { slidesToShow: 4 },
       },
       {
         breakpoint: 480,
@@ -70,14 +70,17 @@ const CategorySlider = ({ items }: { items: CategoryItemType[] }) => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 overflow-hidden">
-      <span className="font-bold mb-2">CATEGORIE'S</span>
-      <Slider {...settings}>
-        {items.map((item) => (
-          <div key={item.id}>
-            <CategoryItem {...item} />
-          </div>
-        ))}
-      </Slider>
+      <div className="flex flex-col">
+        <span className="font-bold mb-1">CATEGORIE'S</span>
+        <span className="h-0.5 mb-3 bg-red-200 w-full" />
+        <Slider {...settings}>
+          {items.map((item) => (
+            <div key={item.id}>
+              <CategoryItem {...item} />
+            </div>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 };
