@@ -1,33 +1,31 @@
-import {
-  emailField,
-  nameField,
-  passField,
-  phoneField,
-} from "@/types/common/fields.schema";
 import { z } from "zod";
 
-/* ================= LOGIN ================= */
-export const loginSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+export const ImageSchema = z.object({
+  imageUrl: z.string(),
+  isPrimary: z.boolean(),
 });
 
-export type LoginInput = z.infer<typeof loginSchema>;
-
-/* ================= REGISTER ================= */
-export const registerSchema = z.object({
-  name: nameField,
-  email: emailField,
-  password: passField,
-  confirmPassword: passField,
-  phone: phoneField,
+export const ProductSectionSchema = z.object({
+  id: z.uuid(),
+  brand: z.string(),
+  title: z.string(),
+  price: z.number().nonnegative(),
+  stock: z.number().int().nonnegative(),
+  images: ImageSchema.array(),
+  discountPrice: z.number().nonnegative().default(0),
 });
 
-export type RegisterInput = z.infer<typeof registerSchema>;
-
-/* ================= OTP ================= */
-export const otpSchema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
+export const CategorySchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  slug: z.string(),
 });
 
-export type OtpInput = z.infer<typeof otpSchema>;
+export const ProductDetailsSchema = ProductSectionSchema.extend({
+  description: z.string(),
+  category: CategorySchema.optional(),
+});
+
+export type ImageTypes = z.infer<typeof ImageSchema>;
+export type ProductTypes = z.infer<typeof ProductSectionSchema>;
+export type ProductDetailsTypes = z.infer<typeof ProductDetailsSchema>;

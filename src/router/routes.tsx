@@ -7,6 +7,7 @@ import { NotFound } from "@/pages/NotFound";
 import Login from "@/features/auth/pages/Login";
 import SignUp from "@/features/auth/pages/SignUp";
 import VerifyOtp from "@/features/auth/pages/VerifyOtp";
+import ProductDetails from "@/features/products/pages/ProductDetails";
 
 export const routerPaths = createBrowserRouter([
   /* ================= 🌍 PUBLIC ================= */
@@ -17,6 +18,10 @@ export const routerPaths = createBrowserRouter([
         index: true,
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/product/;id",
+        element: <ProductDetails />,
       },
     ],
   },

@@ -1,14 +1,14 @@
 import { axiosApi } from "@/lib/axiosApi";
-import type { LoginInput, RegisterInput } from "../schemas/product.schema";
 
-export const authApi = {
-  login: (data: LoginInput) =>
-    axiosApi.post("/auth/login", data).then((res) => res.data),
+export const productApi = {
+  getAllProducts: () =>
+    axiosApi.get("/products/").then((res) => res.data.products),
 
-  register: (data: RegisterInput) =>
-    axiosApi.post("/auth/register", data).then((res) => res.data),
+  getProductBySummary: () =>
+    axiosApi.get("/products/summary").then((res) => res.data),
 
-  logout: () => axiosApi.post("/auth/logout"),
+  ProductById: () => axiosApi.get("/products/:id"),
 
-  userInfo: () => axiosApi.get("/users/profile").then((res) => res.data.user),
+  ProductDeleteById: (id: string) =>
+    axiosApi.delete(`/products/${id}`).then((res) => res.data.user),
 };
