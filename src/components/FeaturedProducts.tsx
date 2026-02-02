@@ -1,5 +1,6 @@
 import Slider from "react-slick";
-import ProductCard, { type ProductTypes } from "./ProductCard";
+import ProductCard from "./ProductCard";
+import type { ProductTypes } from "@/features/products/schemas/product.schema";
 
 export const ProductSlider = ({ items }: { items: ProductTypes[] }) => {
   const settings = {
@@ -25,7 +26,7 @@ export const ProductSlider = ({ items }: { items: ProductTypes[] }) => {
       </div>
 
       {/* Centered Slider */}
-      <Slider {...settings} className="-mx-3">
+      <Slider {...settings} className="-mx-3 flex justify-start">
         {items.map((item) => (
           <div key={item.id} className="flex my-2 justify-center px-3">
             {/* Map only the props that ProductCard needs */}

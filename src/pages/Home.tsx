@@ -8,8 +8,6 @@ import { useProductQuery } from "@/features/products/hooks/products.hook";
 const Home = () => {
   const { products } = useProductQuery();
 
-  console.log("Products ", products);
-
   return (
     <div>
       <HeroSection />

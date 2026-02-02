@@ -1,20 +1,20 @@
+import { productApi } from "@/features/products/api/products.api";
 import { useQuery } from "@tanstack/react-query";
-import { productApi } from "../api/products.api";
+import { categoryApi } from "../api/category.api";
 
-export const useProductDetails = (id: string) => {
-  const productDetails = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => productApi.ProductById(id),
-    enabled: !!id,
+export const useCategoryDetails = () => {
+  const categories = useQuery({
+    queryKey: ["category"],
+    queryFn: () => categoryApi.getAllCategory(),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 1000 * 20,
     retry: false,
   });
 
   return {
-    productDetails: productDetails.data ?? {},
-    productIsLoading: productDetails.isLoading,
-    productError: productDetails.isError,
+    allCategories: categories.data ?? {},
+    categoriesIsLoading: categories.isLoading,
+    categoriesError: categories.isError,
   };
 };
 

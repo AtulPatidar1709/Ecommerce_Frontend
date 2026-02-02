@@ -7,8 +7,9 @@ export const productApi = {
   getProductBySummary: () =>
     axiosApi.get("/products/summary").then((res) => res.data),
 
-  ProductById: () => axiosApi.get("/products/:id"),
+  ProductById: (id: string) =>
+    axiosApi.get(`/products/${id}`).then((res) => res.data.product),
 
   ProductDeleteById: (id: string) =>
-    axiosApi.delete(`/products/${id}`).then((res) => res.data.user),
+    axiosApi.delete(`/products/${id}`).then((res) => res.data),
 };

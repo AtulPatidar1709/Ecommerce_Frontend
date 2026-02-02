@@ -1,21 +1,30 @@
 import { useState } from "react";
-import { ShoppingCart, Heart } from "lucide-react";
 import type {
   ImageTypes,
   ProductDetailsTypes,
 } from "../schemas/product.schema";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useParams } from "react-router-dom";
+import { ShoppingCart, Heart } from "lucide-react";
+import { useProductDetails } from "../hooks/products.hook";
 
-interface Props {
-  product: ProductDetailsTypes;
-}
+const ProductDetails = () => {
+  const { id } = useParams();
 
-const ProductDetails = ({ product }: Props) => {
-  // First image is default main image
-  const [mainImage, setMainImage] = useState<string>(
-    product.images[0]?.imageUrl || "/placeholder.png",
+  const { productDetails, productIsLoading, productError } = useProductDetails(
+    id!,
   );
+
+  const [mainImage, setMainImage] = useState<string | null>(null);
+
+  if (productIsLoading) return <div>Loading...</div>;
+
+  if (productError) return <div>Loading...</div>;
+
+  const product: ProductDetailsTypes = productDetails;
+
+  const selectedImage = mainImage ?? product.images[0].imageUrl ?? "";
 
   // Calculate discount percentage
   const discountPercentage = Math.round(
@@ -28,7 +37,7 @@ const ProductDetails = ({ product }: Props) => {
         <div className="flex flex-col gap-4">
           <div className="w-full aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden">
             <img
-              src={mainImage}
+              src={selectedImage}
               alt={product.title}
               className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
             />

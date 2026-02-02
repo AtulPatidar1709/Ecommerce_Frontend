@@ -6,15 +6,11 @@ import { Badge } from "./ui/badge";
 import type { ProductTypes } from "@/features/products/schemas/product.schema";
 
 const ProductCard = (product: ProductTypes) => {
-  console.log("Product Card Section ", product);
   const thumbnail: string = product?.images[0].imageUrl;
   const discountPercentage =
     ((product.price - product.discountPrice) / product.price) * 100;
 
-  // Optional: round to nearest integer
   const disCount = Math.round(discountPercentage);
-
-  console.log("Persentage dis. ", disCount);
 
   return (
     <Card className="group relative max-w-sm overflow-hidden rounded-2xl border bg-background transition-all hover:shadow-xl">
