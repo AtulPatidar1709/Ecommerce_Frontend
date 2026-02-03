@@ -7,6 +7,7 @@ export const ImageSchema = z.object({
 
 export const ProductSectionSchema = z.object({
   id: z.uuid(),
+  slug: z.string(),
   brand: z.string(),
   title: z.string(),
   price: z.number().nonnegative(),

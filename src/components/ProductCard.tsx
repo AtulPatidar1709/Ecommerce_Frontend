@@ -12,6 +12,8 @@ const ProductCard = (product: ProductTypes) => {
 
   const disCount = Math.round(discountPercentage);
 
+  console.log("Product Details is ", product);
+
   return (
     <Card className="group relative max-w-sm overflow-hidden rounded-2xl border bg-background transition-all hover:shadow-xl">
       {disCount > 0 && (
@@ -20,7 +22,7 @@ const ProductCard = (product: ProductTypes) => {
         </Badge>
       )}
 
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+      <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
         <img
           src={thumbnail}
           alt={product.title}
@@ -53,7 +55,7 @@ const ProductCard = (product: ProductTypes) => {
             <ShoppingCart className="h-4 w-4" />
           </Button>
 
-          <Link to={`/products/${product.id}`} className="flex-1">
+          <Link to={`/products/${product.slug}`} className="flex-1">
             <Button
               aria-label="product-details"
               variant="outline"

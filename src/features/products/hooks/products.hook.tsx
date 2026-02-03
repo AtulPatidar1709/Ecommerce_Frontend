@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { productApi } from "../api/products.api";
+import type { FilterState } from "../pages/Products";
 
 export const useProductDetails = (id: string) => {
   const productDetails = useQuery({
@@ -18,17 +19,17 @@ export const useProductDetails = (id: string) => {
   };
 };
 
-export const useProductQuery = () => {
+export const useProductQuery = (filters?: FilterState) => {
   const query = useQuery({
-    queryKey: ["products"],
-    queryFn: productApi.getAllProducts,
+    queryKey: ["products", filters],
+    queryFn: () => productApi.getAllProducts(filters!),
     retry: false,
+    placeholderData: (previousData) => previousData,
     refetchOnWindowFocus: false,
-    staleTime: Infinity,
   });
 
   return {
-    products: query.data ?? null,
+    products: query.data ?? [],
     isProductLoading: query.isLoading,
     isProductError: query.isError,
   };

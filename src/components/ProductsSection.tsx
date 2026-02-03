@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import type { ProductTypes } from "./ProductCard";
 import ProductCard from "./ProductCard";
+import type { ProductTypes } from "@/features/products/schemas/product.schema";
 
 const ProductsSection = ({ items }: { items: ProductTypes[] }) => {
+  console.log("Product data is ", items);
   return (
     <section className="max-w-6xl mx-auto px-4 py-10 overflow-hidden">
       {/* Header */}

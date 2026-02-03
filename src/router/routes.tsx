@@ -3,11 +3,12 @@ import Home from "../pages/Home";
 import { UserLayout } from "./user.routes";
 import { AuthLayout } from "./login.routes";
 import { RouteGuard } from "./guards";
-import { NotFound } from "@/pages/NotFound";
 import Login from "@/features/auth/pages/Login";
 import SignUp from "@/features/auth/pages/SignUp";
 import VerifyOtp from "@/features/auth/pages/VerifyOtp";
 import ProductDetails from "@/features/products/pages/ProductDetails";
+import NotFoundPage from "@/components/NotFoundPage";
+import Products from "@/features/products/pages/Products";
 
 export const routerPaths = createBrowserRouter([
   /* ================= 🌍 PUBLIC ================= */
@@ -20,8 +21,12 @@ export const routerPaths = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/products/:id",
+        path: "/products/:slug",
         element: <ProductDetails />,
+      },
+      {
+        path: "/products/",
+        element: <Products />,
       },
     ],
   },
@@ -54,6 +59,6 @@ export const routerPaths = createBrowserRouter([
   /* ================= ❌ FALLBACK ================= */
   {
     element: <AuthLayout />,
-    children: [{ path: "*", element: <NotFound /> }],
+    children: [{ path: "*", element: <NotFoundPage /> }],
   },
 ]);

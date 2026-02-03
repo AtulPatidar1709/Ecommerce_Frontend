@@ -6,14 +6,23 @@ import type {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
-import { ShoppingCart, Heart } from "lucide-react";
+import { ShoppingCart, Heart, ChevronRight, Home, Tag } from "lucide-react";
 import { useProductDetails } from "../hooks/products.hook";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { BsCart3 } from "react-icons/bs";
 
 const ProductDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
 
   const { productDetails, productIsLoading, productError } = useProductDetails(
-    id!,
+    slug!,
   );
 
   const [mainImage, setMainImage] = useState<string | null>(null);
@@ -33,9 +42,42 @@ const ProductDetails = () => {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-2">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/" className="flex items-center gap-1">
+                <Home className="size-4 stroke-2" />
+                <span>Home</span>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator>
+              <ChevronRight className="stroke-2" />
+            </BreadcrumbSeparator>
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href="/products"
+                className="flex items-center gap-1"
+              >
+                <BsCart3 className="size-4 stroke-2" />
+                <span>Products</span>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator>
+              <ChevronRight className="stroke-2" />
+            </BreadcrumbSeparator>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1">
+                <Tag className="size-4 stroke-2" />
+                <span>Category</span>
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="flex flex-col gap-4">
-          <div className="w-full aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden">
+          <div className="w-full aspect-4/3 bg-gray-100 rounded-xl overflow-hidden">
             <img
               src={selectedImage}
               alt={product.title}
