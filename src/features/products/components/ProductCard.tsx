@@ -19,22 +19,29 @@ const ProductCard = (product: ProductTypes) => {
     : 0;
 
   return (
-    <Card className="group relative min-w-44 max-w-sm rounded-2xl border bg-background transition-all duration-300 hover:shadow-2xl">
+    <Card className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-background transition hover:shadow-xl">
+      {/* Discount Badge */}
       {discountPercentage > 0 && (
-        <div className="absolute left-0 top-0 z-20">
-          <Badge className="rounded-none rounded-br-xl bg-red-600 px-3 py-1 text-xs font-semibold text-white">
-            {discountPercentage}% OFF
-          </Badge>
-        </div>
+        <Badge className="absolute left-0 top-0 z-20 rounded-none rounded-br-xl bg-red-600 px-3 py-1 text-xs font-semibold text-white">
+          {discountPercentage}% OFF
+        </Badge>
       )}
 
-      {/* Image */}
-      <div className="relative overflow-hidden rounded-t-2xl bg-gray-50">
+      {/* Image Wrapper — FIXED HEIGHT */}
+      <div className="relative aspect-auto w-full bg-muted">
         <img
           src={thumbnail}
           alt={product.title}
           loading="lazy"
-          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110"
+          className="
+            h-full
+            w-full
+            object-contain
+            p-1
+            transition-transform
+            duration-300
+            group-hover:scale-105
+          "
         />
 
         {product.stock === 0 && (
@@ -46,7 +53,8 @@ const ProductCard = (product: ProductTypes) => {
         )}
       </div>
 
-      <CardContent className="space-y-2 px-4 py-3">
+      {/* Content */}
+      <CardContent className="flex flex-1 flex-col justify-between gap-3 p-4">
         <h3 className="line-clamp-2 text-sm font-medium leading-snug">
           {product.title}
         </h3>
@@ -58,17 +66,13 @@ const ProductCard = (product: ProductTypes) => {
             </span>
           )}
 
-          <span className="text-lg font-semibold text-gray-900">
+          <span className="text-lg font-semibold">
             ₹{(discountPrice ?? price).toLocaleString("en-IN")}
           </span>
         </div>
 
-        <div className="flex items-center gap-2 pt-2">
-          <Button
-            size="icon"
-            disabled={product.stock === 0}
-            className="shrink-0"
-          >
+        <div className="flex gap-2 pt-2">
+          <Button size="icon" disabled={product.stock === 0}>
             <ShoppingCart className="h-4 w-4" />
           </Button>
 

@@ -1,27 +1,44 @@
 import { MainBanner } from "./MainBanner";
 import { SideBanner } from "./SideBanner";
 
-import boatImg from "../../public/banner-images/boat.png";
+import { useBannersQuery } from "@/features/products/hooks/banner.hook";
+import type { CreateBannerInput } from "@/features/products/schemas/banner.schema";
 
 export default function HeroSection() {
+  const { banners, isBannersLoading, isBannersError } = useBannersQuery();
+
+  if (isBannersLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isBannersError) {
+    return <div>Error loading banners.</div>;
+  }
+
+  console.log("banners: ", banners);
+
+  const mainBanner: CreateBannerInput = banners[0];
+  const sideBanners = banners.slice(1);
+
   return (
     <section className="w-full pt-10">
       <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
-        <MainBanner />
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-          <SideBanner
-            title="Bamboo Buds"
-            label="New Arrival"
-            gradient="from-purple-600 to-pink-500"
-            image={boatImg}
-          />
-          <SideBanner
-            title="HomePod Pro"
-            label="New Arrival"
-            gradient="from-gray-900 to-gray-700"
-            image={boatImg}
-          />
-        </div>
+        <MainBanner banner={mainBanner} />
+        {sideBanners.length > 0 && (
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+            {sideBanners.map((banner: CreateBannerInput) => {
+              return (
+                <SideBanner
+                  title={banner.title}
+                  description={banner.description ?? ""}
+                  linkUrl={banner.linkUrl ?? "#"}
+                  imageUrl={banner.imageUrl}
+                  gradient="from-gray-900 to-gray-700"
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
