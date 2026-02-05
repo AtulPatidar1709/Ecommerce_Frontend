@@ -3,7 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Filter } from "lucide-react";
 import SidebarContent from "@/features/products/lib/SidebarContent";
-import type { FilterState } from "@/features/products/pages/Products";
+import type { FilterState } from "@/features/products/schemas/product.schema";
 
 interface SidebarContentProps {
   filters: FilterState;
@@ -27,7 +27,7 @@ export default function EcommerceSidebarFilter({
             </Button>
           </SheetTrigger>
 
-          <SheetContent side="left" className="w-[320px] sm:w-[360px]">
+          <SheetContent side="left" className="w-[320px] sm:w-90`">
             <ScrollArea className="h-full pr-4">
               <SidebarContent
                 filters={filters}
@@ -40,7 +40,7 @@ export default function EcommerceSidebarFilter({
       </div>
 
       {/* Desktop */}
-      <aside className="hidden lg:block w-[280px] sticky top-20">
+      <aside className="hidden lg:block w-70 sticky top-20">
         <SidebarContent
           filters={filters}
           updateFilters={updateFilters}

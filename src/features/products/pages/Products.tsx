@@ -1,26 +1,23 @@
-import EcommerceSidebarFilter from "@/components/EcommerceSidebarFilter";
-import { ProductGrid } from "@/components/ProductGrid";
 import { useProductQuery } from "../hooks/products.hook";
 import { useState } from "react";
-
-export interface FilterState {
-  search: string;
-  price: [number, number];
-  brands: string[];
-  ratings: number[];
-}
+import type { FilterState } from "../schemas/product.schema";
+import { useDebounce } from "@/lib/useDebounce";
+import EcommerceSidebarFilter from "../components/EcommerceSidebarFilter";
+import { ProductGrid } from "../components/ProductGrid";
 
 const Products = () => {
   const [filters, setFilters] = useState<FilterState>({
     search: "",
-    price: [1000, 200000],
+    price: [100, 25000],
     brands: [],
     ratings: [],
   });
 
-  // ✅ PASS FILTERS HERE
+  //Debounce filters to avoid excessive queries
+  const debouncedFilters = useDebounce(filters, 500);
+
   const { products, isProductLoading, isProductError } =
-    useProductQuery(filters);
+    useProductQuery(debouncedFilters);
 
   const updateFilters = (next: FilterState) => {
     setFilters(next);
@@ -39,7 +36,7 @@ const Products = () => {
   };
 
   return (
-    <div className="flex py-4 gap-6">
+    <div className="flex min-h-max py-4 gap-6 flex-col lg:flex-row">
       <EcommerceSidebarFilter
         filters={filters}
         updateFilters={updateFilters}

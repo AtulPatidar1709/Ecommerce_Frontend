@@ -89,7 +89,7 @@ export function Footer() {
             </Link>
           </div>
           <p className="mt-8 text-muted-foreground text-sm md:mt-0">
-            &copy; {new Date().getFullYear()} efferd, All rights reserved
+            &copy; {new Date().getFullYear()} Ecommerce, All rights reserved
           </p>
         </AnimatedContainer>
 

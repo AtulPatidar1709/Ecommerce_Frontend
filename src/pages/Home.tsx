@@ -1,8 +1,8 @@
 import CategorySection from "@/components/CategorySection";
-import { ProductSlider } from "@/components/FeaturedProducts";
-import { FeaturesBar } from "@/components/FeaturesBar";
 import HeroSection from "@/components/HeroSection";
-import ProductsSection from "@/components/ProductsSection";
+import { ProductSlider } from "@/features/products/components/FeaturedProducts";
+import { FeaturesBar } from "@/features/products/components/FeaturesBar";
+import ProductsSection from "@/features/products/components/ProductsSection";
 import { useProductQuery } from "@/features/products/hooks/products.hook";
 
 const Home = () => {

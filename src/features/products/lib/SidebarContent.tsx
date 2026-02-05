@@ -1,4 +1,3 @@
-import type { FilterState } from "@/components/EcommerceSidebarFilter";
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import type { FilterState } from "../schemas/product.schema";
 
 const BRANDS = ["Apple", "Samsung", "Sony", "Dell", "HP", "Lenovo", "Asus"];
 const RATINGS = [5, 4, 3];
@@ -25,6 +25,15 @@ const SidebarContent = ({
   updateFilters,
   toggleArrayValue,
 }: SidebarContentProps) => {
+  function resetFilters() {
+    updateFilters({
+      search: "",
+      price: [0, 25000],
+      brands: [],
+      ratings: [],
+    });
+  }
+
   return (
     <Card className="rounded-2xl border-none shadow-sm">
       <CardContent className="p-4 space-y-5">
@@ -41,11 +50,11 @@ const SidebarContent = ({
           {/* Price */}
           <AccordionItem value="price">
             <AccordionTrigger>Price Range</AccordionTrigger>
-            <AccordionContent className="space-y-3">
+            <AccordionContent className="space-y-3 mt-2">
               <Slider
                 min={0}
-                max={300000}
-                step={1000}
+                max={150000}
+                step={100}
                 value={filters.price}
                 onValueChange={(v) =>
                   updateFilters({ ...filters, price: v as [number, number] })
@@ -91,18 +100,7 @@ const SidebarContent = ({
           </AccordionItem>
         </Accordion>
 
-        <Button
-          variant="secondary"
-          className="w-full"
-          onClick={() =>
-            updateFilters({
-              search: "",
-              price: [1000, 200000],
-              brands: [],
-              ratings: [],
-            })
-          }
-        >
+        <Button variant="secondary" className="w-full" onClick={resetFilters}>
           Reset Filters
         </Button>
       </CardContent>

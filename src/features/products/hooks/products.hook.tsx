@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { productApi } from "../api/products.api";
-import type { FilterState } from "../pages/Products";
+import type { FilterState } from "../schemas/product.schema";
 
 export const useProductDetails = (id: string) => {
   const productDetails = useQuery({

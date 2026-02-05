@@ -1,5 +1,5 @@
 import { axiosApi } from "@/lib/axiosApi";
-import type { FilterState } from "../pages/Products";
+import type { FilterState } from "../schemas/product.schema";
 
 export const productApi = {
   getAllProducts: (filters?: FilterState) =>
