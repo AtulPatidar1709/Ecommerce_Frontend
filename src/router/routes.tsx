@@ -9,6 +9,7 @@ import VerifyOtp from "@/features/auth/pages/VerifyOtp";
 import ProductDetails from "@/features/products/pages/ProductDetails";
 import NotFoundPage from "@/components/NotFoundPage";
 import Products from "@/features/products/pages/Products";
+import Addresses from "@/features/address/pages/Addresses";
 
 export const routerPaths = createBrowserRouter([
   /* ================= 🌍 PUBLIC ================= */
@@ -52,6 +53,23 @@ export const routerPaths = createBrowserRouter([
       {
         element: <AuthLayout />,
         children: [{ path: "/verify-otp", element: <VerifyOtp /> }],
+      },
+    ],
+  },
+
+  /* ================= 🚪 Login - Not Verified ================= */
+  {
+    element: <RouteGuard auth verified />,
+    path: "/",
+    children: [
+      {
+        element: <UserLayout />,
+        children: [
+          {
+            path: "/addresses",
+            element: <Addresses />,
+          },
+        ],
       },
     ],
   },

@@ -1,15 +1,20 @@
 "use client";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, UserIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useScroll } from "motion/react";
 import { Separator } from "@/components/ui/separator";
-import { ModeToggle } from "./theme-switch";
-import { Search } from "./search";
 import logo from "../../public/logo.jpg";
 import { useUserQuery } from "@/features/auth/hooks/auth.hooks";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const menuItems = [
   { name: "Products", href: "/products" },
@@ -108,11 +113,7 @@ export const Header = () => {
                 </ul>
               </div>
               <Separator orientation="vertical" />
-              <Search />
-              <Separator orientation="vertical" />
-              <ModeToggle />
-              <Separator orientation="vertical" />
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+              <div className="flex w-full mr-3 flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                 {!user && (
                   <>
                     <Button asChild variant="outline" size="sm">
@@ -126,6 +127,42 @@ export const Header = () => {
                       </Link>
                     </Button>
                   </>
+                )}
+
+                {user && (
+                  <React.Fragment>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="outline-none">
+                          <Avatar className="h-8 w-8 cursor-pointer">
+                            <AvatarImage
+                              src={
+                                user.profilePicture ??
+                                `https://api.dicebear.com/6.x/initials/svg?seed=${user.name}`
+                              }
+                              alt={user.name}
+                              className="grayscale"
+                            />
+                            <AvatarFallback>
+                              {user.name?.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                        </button>
+                      </DropdownMenuTrigger>
+
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem className="flex items-center gap-2">
+                          <Link
+                            to="/addresses"
+                            className="flex items-center gap-2"
+                          >
+                            <UserIcon className="h-4 w-4" />
+                            <span>Addresses</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </React.Fragment>
                 )}
               </div>
             </div>
