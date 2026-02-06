@@ -4,6 +4,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Filter } from "lucide-react";
 import SidebarContent from "@/features/products/lib/SidebarContent";
 import type { FilterState } from "@/features/products/schemas/product.schema";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 interface SidebarContentProps {
   filters: FilterState;
@@ -19,6 +21,17 @@ export default function EcommerceSidebarFilter({
   updateFilters,
   toggleArrayValue,
 }: SidebarContentProps) {
+  const [params] = useSearchParams();
+  const categoriesParams = params.getAll("categories");
+
+  console.log("categories in sidebar filter ,", categoriesParams);
+
+  useEffect(() => {
+    if (categoriesParams.length > 0) {
+      toggleArrayValue("categories", categoriesParams[0] || "");
+    }
+  }, []);
+
   return (
     <>
       {/* Mobile */}

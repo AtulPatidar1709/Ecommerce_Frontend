@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useNavigate } from "react-router-dom";
 
 const RATINGS = [5, 4, 3];
 
@@ -30,6 +31,7 @@ const SidebarContent = ({
   updateFilters,
   toggleArrayValue,
 }: SidebarContentProps) => {
+  const navigate = useNavigate();
   const { allCategories, categoriesIsLoading, categoriesError } =
     useCategoryDetails();
 
@@ -41,6 +43,7 @@ const SidebarContent = ({
       ratings: [],
       sort: undefined,
     });
+    navigate("/products");
   }
 
   if (categoriesIsLoading) return <div>Loading...</div>;

@@ -11,7 +11,7 @@ export const FilterSchema = z.object({
 export const getAllProductsQuerySchema = z.object({
   search: z.string().optional(),
 
-  brand: z
+  categories: z
     .string()
     .transform((v) => v.split(","))
     .optional(),

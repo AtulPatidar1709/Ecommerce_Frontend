@@ -1,9 +1,26 @@
 import type { CreateCategoryInput } from "@/features/category/schemas/category.schema";
 import { Card } from "./ui/card";
+import { useNavigate } from "react-router-dom";
 
-export const CategoryItem = ({ name, imageUrl }: CreateCategoryInput) => {
+export const CategoryItem = ({
+  name = "Default Category",
+  imageUrl,
+}: CreateCategoryInput) => {
+  const navigate = useNavigate();
+
+  name = name.toUpperCase();
+
+  console.log("name in category section ,", name);
+
+  function handleCategoryClick() {
+    navigate(`/products?categories=${name}`);
+  }
+
   return (
-    <div className="flex flex-col items-center w-28 px-2">
+    <div
+      onClick={handleCategoryClick}
+      className="flex flex-col items-center w-28 px-2"
+    >
       <Card className="rounded-full border-none shadow-md hover:shadow-lg transition-all duration-300 w-28 h-28 flex items-center justify-center bg-white">
         {imageUrl ? (
           <img
