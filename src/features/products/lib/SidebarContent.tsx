@@ -9,21 +9,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import type { FilterState } from "../schemas/product.schema";
+import type {
+  FilterState,
+  SidebarContentProps,
+} from "../schemas/product.schema";
 import { useCategoryDetails } from "@/features/category/hooks/category.hook";
 import type { CreateCategoryInput } from "@/features/category/schemas/category.schema";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-// const Categories = ["Apple", "Samsung", "Sony", "Dell", "HP", "Lenovo", "Asus"];
 const RATINGS = [5, 4, 3];
-
-interface SidebarContentProps {
-  filters: FilterState;
-  updateFilters: (filters: FilterState) => void;
-  toggleArrayValue: (
-    key: "categories" | "ratings",
-    value: string | number,
-  ) => void;
-}
 
 const SidebarContent = ({
   filters,
@@ -36,9 +36,10 @@ const SidebarContent = ({
   function resetFilters() {
     updateFilters({
       search: "",
-      price: [0, 25000],
+      price: [0, 250000],
       categories: [],
       ratings: [],
+      sort: undefined,
     });
   }
 
@@ -58,6 +59,26 @@ const SidebarContent = ({
           }
         />
 
+        {/* Sorting Section  */}
+
+        <Select
+          value={filters.sort}
+          onValueChange={(value) =>
+            updateFilters({
+              ...filters,
+              sort: value as FilterState["sort"],
+            })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="latest">Latest</SelectItem>
+            <SelectItem value="price_asc">Price: Low to High</SelectItem>
+            <SelectItem value="price_desc">Price: High to Low</SelectItem>
+          </SelectContent>
+        </Select>
         <Accordion type="multiple" defaultValue={["price", "brand", "rating"]}>
           {/* Price */}
           <AccordionItem value="price">

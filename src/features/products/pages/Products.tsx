@@ -8,9 +8,10 @@ import { ProductGrid } from "../components/ProductGrid";
 const Products = () => {
   const [filters, setFilters] = useState<FilterState>({
     search: "",
-    price: [100, 25000],
+    price: [100, 250000],
     categories: [],
     ratings: [],
+    sort: undefined,
   });
 
   //Debounce filters to avoid excessive queries

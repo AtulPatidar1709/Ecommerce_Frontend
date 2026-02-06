@@ -15,8 +15,6 @@ export default function HeroSection() {
     return <div>Error loading banners.</div>;
   }
 
-  console.log("banners: ", banners);
-
   const mainBanner: CreateBannerInput = banners[0];
   const sideBanners = banners.slice(1);
 
@@ -29,6 +27,7 @@ export default function HeroSection() {
             {sideBanners.map((banner: CreateBannerInput) => {
               return (
                 <SideBanner
+                  key={banner.title}
                   title={banner.title}
                   description={banner.description ?? ""}
                   linkUrl={banner.linkUrl ?? "#"}

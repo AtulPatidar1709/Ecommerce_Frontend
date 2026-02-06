@@ -1,11 +1,12 @@
 import { z } from "zod";
 
-export interface FilterState {
-  search: string;
-  price: [number, number];
-  categories: string[];
-  ratings: number[];
-}
+export const FilterSchema = z.object({
+  search: z.string().optional(),
+  price: z.tuple([z.number(), z.number()]),
+  categories: z.array(z.string()),
+  ratings: z.array(z.number()),
+  sort: z.enum(["price_asc", "price_desc", "latest"]).optional(),
+});
 
 export const getAllProductsQuerySchema = z.object({
   search: z.string().optional(),
@@ -53,6 +54,16 @@ export const ProductDetailsSchema = ProductSectionSchema.extend({
   category: CategorySchema.optional(),
 });
 
+export interface SidebarContentProps {
+  filters: FilterState;
+  updateFilters: (filters: FilterState) => void;
+  toggleArrayValue: (
+    key: "categories" | "ratings",
+    value: string | number,
+  ) => void;
+}
+
+export type FilterState = z.infer<typeof FilterSchema>;
 export type ImageTypes = z.infer<typeof ImageSchema>;
 export type ProductTypes = z.infer<typeof ProductSectionSchema>;
 export type ProductDetailsTypes = z.infer<typeof ProductDetailsSchema>;
