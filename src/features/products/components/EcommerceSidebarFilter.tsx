@@ -8,7 +8,10 @@ import type { FilterState } from "@/features/products/schemas/product.schema";
 interface SidebarContentProps {
   filters: FilterState;
   updateFilters: (filters: FilterState) => void;
-  toggleArrayValue: (key: "brands" | "ratings", value: string | number) => void;
+  toggleArrayValue: (
+    key: "categories" | "ratings",
+    value: string | number,
+  ) => void;
 }
 
 export default function EcommerceSidebarFilter({

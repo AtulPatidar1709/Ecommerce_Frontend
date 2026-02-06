@@ -33,7 +33,7 @@ export function ProductGrid({
       gap-4
     "
       >
-        {products.map((product) => (
+        {products?.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}
       </div>

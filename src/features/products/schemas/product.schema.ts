@@ -3,7 +3,7 @@ import { z } from "zod";
 export interface FilterState {
   search: string;
   price: [number, number];
-  brands: string[];
+  categories: string[];
   ratings: number[];
 }
 

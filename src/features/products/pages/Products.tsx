@@ -9,7 +9,7 @@ const Products = () => {
   const [filters, setFilters] = useState<FilterState>({
     search: "",
     price: [100, 25000],
-    brands: [],
+    categories: [],
     ratings: [],
   });
 
@@ -24,7 +24,7 @@ const Products = () => {
   };
 
   const toggleArrayValue = (
-    key: "brands" | "ratings",
+    key: "categories" | "ratings",
     value: string | number,
   ) => {
     setFilters((prev) => ({

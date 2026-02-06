@@ -10,14 +10,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import type { FilterState } from "../schemas/product.schema";
+import { useCategoryDetails } from "@/features/category/hooks/category.hook";
+import type { CreateCategoryInput } from "@/features/category/schemas/category.schema";
 
-const BRANDS = ["Apple", "Samsung", "Sony", "Dell", "HP", "Lenovo", "Asus"];
+// const Categories = ["Apple", "Samsung", "Sony", "Dell", "HP", "Lenovo", "Asus"];
 const RATINGS = [5, 4, 3];
 
 interface SidebarContentProps {
   filters: FilterState;
   updateFilters: (filters: FilterState) => void;
-  toggleArrayValue: (key: "brands" | "ratings", value: string | number) => void;
+  toggleArrayValue: (
+    key: "categories" | "ratings",
+    value: string | number,
+  ) => void;
 }
 
 const SidebarContent = ({
@@ -25,14 +30,21 @@ const SidebarContent = ({
   updateFilters,
   toggleArrayValue,
 }: SidebarContentProps) => {
+  const { allCategories, categoriesIsLoading, categoriesError } =
+    useCategoryDetails();
+
   function resetFilters() {
     updateFilters({
       search: "",
       price: [0, 25000],
-      brands: [],
+      categories: [],
       ratings: [],
     });
   }
+
+  if (categoriesIsLoading) return <div>Loading...</div>;
+
+  if (categoriesError) return <div>Error loading categories</div>;
 
   return (
     <Card className="rounded-2xl border-none shadow-sm">
@@ -69,15 +81,20 @@ const SidebarContent = ({
 
           {/* Brands */}
           <AccordionItem value="brand">
-            <AccordionTrigger>Brands</AccordionTrigger>
+            <AccordionTrigger>Categories</AccordionTrigger>
             <AccordionContent className="space-y-2">
-              {BRANDS.map((brand) => (
-                <label key={brand} className="flex items-center gap-2 text-sm">
+              {allCategories?.map((category: CreateCategoryInput) => (
+                <label
+                  key={category.name}
+                  className="flex items-center gap-2 text-sm"
+                >
                   <Checkbox
-                    checked={filters.brands.includes(brand)}
-                    onCheckedChange={() => toggleArrayValue("brands", brand)}
+                    checked={filters.categories.includes(category.name)}
+                    onCheckedChange={() =>
+                      toggleArrayValue("categories", category.name)
+                    }
                   />
-                  {brand}
+                  {category.name}
                 </label>
               ))}
             </AccordionContent>
