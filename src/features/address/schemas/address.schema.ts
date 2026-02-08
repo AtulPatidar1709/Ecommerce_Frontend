@@ -2,6 +2,7 @@ import { nameField, phoneField } from "@/types/common/fields.schema";
 import { z } from "zod";
 
 export const createAddressSchema = z.object({
+  id: z.uuid("Invalid address ID format").optional(),
   name: nameField,
   phone: phoneField,
   street: z.string().min(3, "Street address is required").toLowerCase(),

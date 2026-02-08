@@ -38,9 +38,10 @@ const Addresses = () => {
 
   if (isLoading) return <CardSkeleton />;
 
+  console.log("Addresses is ", addresses);
   if (isError || !addresses) {
     toast.error("Failed to load addresses");
-    navigate("/home");
+    navigate("/");
   }
 
   return (
@@ -83,7 +84,7 @@ const Addresses = () => {
       {/* Address Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {addresses.map((address: CreateAddressInputType) => (
-          <Card key={address.name} className="relative">
+          <Card key={address.id} className="relative p-2">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
@@ -105,7 +106,7 @@ const Addresses = () => {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem
                     className="text-red-600"
-                    onClick={() => deleteAddress(address.name)}
+                    onClick={() => deleteAddress(address.id!)}
                   >
                     Delete
                   </DropdownMenuItem>
