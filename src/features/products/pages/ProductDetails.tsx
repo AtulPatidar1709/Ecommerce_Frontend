@@ -17,6 +17,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { BsCart3 } from "react-icons/bs";
+import { useUpdateCartItems } from "@/features/cart/hooks/cart.hook";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -24,6 +25,8 @@ const ProductDetails = () => {
   const { productDetails, productIsLoading, productError } = useProductDetails(
     slug!,
   );
+
+  const { updateCartItemQuantity, isUpdating } = useUpdateCartItems();
 
   const [mainImage, setMainImage] = useState<string | null>(null);
 
@@ -137,9 +140,10 @@ const ProductDetails = () => {
           <p className="text-gray-700 leading-relaxed">{product.description}</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-4">
             <Button
+              onClick={() => updateCartItemQuantity(product.id, 1)}
               size="lg"
               className="flex-1 justify-center"
-              disabled={product.stock === 0}
+              disabled={product.stock === 0 || isUpdating}
             >
               <ShoppingCart className="mr-2 h-5 w-5" />
               Add to Cart

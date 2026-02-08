@@ -1,6 +1,6 @@
 "use client";
 import { Link } from "react-router-dom";
-import { Menu, UserIcon, X } from "lucide-react";
+import { Menu, ShoppingCart, UserIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useCartDetails } from "@/features/cart/hooks/cart.hook";
 
 const menuItems = [
   { name: "Products", href: "/products" },
@@ -28,6 +29,8 @@ export const Header = () => {
 
   const { scrollYProgress } = useScroll();
   const { user } = useUserQuery();
+
+  const { allCartItems } = useCartDetails();
 
   React.useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
@@ -112,6 +115,11 @@ export const Header = () => {
                   ))}
                 </ul>
               </div>
+              <Separator orientation="vertical" />
+              <Button>
+                <ShoppingCart className="h-4 w-4" />
+                <span>{allCartItems?.summary?.totalItems || 0}</span>
+              </Button>
               <Separator orientation="vertical" />
               <div className="flex w-full mr-3 flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                 {!user && (

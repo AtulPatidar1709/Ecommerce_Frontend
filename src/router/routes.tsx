@@ -10,6 +10,7 @@ import ProductDetails from "@/features/products/pages/ProductDetails";
 import NotFoundPage from "@/components/NotFoundPage";
 import Products from "@/features/products/pages/Products";
 import Addresses from "@/features/address/pages/Addresses";
+import CartPage from "@/features/cart/pages/Cart";
 
 export const routerPaths = createBrowserRouter([
   /* ================= 🌍 PUBLIC ================= */
@@ -57,7 +58,7 @@ export const routerPaths = createBrowserRouter([
     ],
   },
 
-  /* ================= 🚪 Login - Not Verified ================= */
+  /* ================= 🚪 Login - Verified ================= */
   {
     element: <RouteGuard auth verified />,
     path: "/",
@@ -68,6 +69,10 @@ export const routerPaths = createBrowserRouter([
           {
             path: "/addresses",
             element: <Addresses />,
+          },
+          {
+            path: "/cart",
+            element: <CartPage />,
           },
         ],
       },
