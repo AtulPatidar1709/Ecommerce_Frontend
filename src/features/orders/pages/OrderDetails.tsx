@@ -100,7 +100,10 @@ export default function OrderDetailsPage() {
               </div>
             </div>
             <p className="font-semibold text-lg">
-              ₹{(item.price * item.quantity).toFixed(2)}
+              ₹
+              {(
+                item.product.discountPrice ?? item.product.price * item.quantity
+              ).toFixed(2)}
             </p>
           </Card>
         ))}
