@@ -25,14 +25,14 @@ const processQueue = (error?: unknown) => {
 axiosApi.interceptors.response.use(
   (res) => res,
   async (error: AxiosError) => {
+    if (!error.config) return Promise.reject(error);
+
     const originalRequest = error.config as RetryAxiosRequestConfig;
-    const hasAuthHeader = !!originalRequest.headers?.accessToken;
 
     if (
       error.response?.status !== 401 ||
       originalRequest._retry ||
-      originalRequest.url?.includes("/auth/refresh-token") ||
-      !hasAuthHeader
+      originalRequest.url?.includes("/auth/refresh-token")
     ) {
       return Promise.reject(error);
     }

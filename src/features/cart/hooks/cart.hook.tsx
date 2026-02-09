@@ -24,55 +24,61 @@ export const useCartDetails = () => {
   };
 };
 
+type UpdateCartItemParams = {
+  productId: string;
+  quantity: number;
+};
+
 export const useUpdateCartItems = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const updateCartItem = useMutation({
-    mutationFn: async ({
-      productId,
-      quantity,
-    }: {
-      productId: string;
-      quantity: number;
-    }) => {
+    mutationFn: async ({ productId, quantity }: UpdateCartItemParams) => {
       await cartApi.addToCart(productId, quantity);
     },
-    onMutate: async ({
-      productId,
-      quantity,
-    }: {
-      productId: string;
-      quantity: number;
-    }) => {
+    onMutate: async ({ productId, quantity }: UpdateCartItemParams) => {
       await queryClient.cancelQueries({ queryKey: ["cart"] });
 
       const previousCart = queryClient.getQueryData(["cart"]);
+
       queryClient.setQueryData(["cart"], (oldCart: any) => {
         if (!oldCart) return oldCart;
-        const updatedCartItems = oldCart.cartItems.map((item: any) =>
-          item.productId === productId
-            ? {
-                ...item,
-                quantity,
-                subtotal: item.price * quantity,
-              }
-            : item,
-        );
+
+        const newQuantity = Number(quantity ?? 0);
+
+        const updatedCartItems = oldCart.cartItems.map((item: any) => {
+          if (item.productId !== productId) return item;
+
+          const price = Number(
+            item.product.discountPrice ?? item.product.price ?? 0,
+          );
+
+          return {
+            ...item,
+            quantity: newQuantity,
+            subtotal: price * newQuantity,
+          };
+        });
+
+        const prevItem =
+          oldCart.cartItems.find((item: any) => item.productId === productId) ??
+          {};
+
+        const prevQuantity = Number(prevItem.quantity ?? 0);
+
         return {
           ...oldCart,
           cartItems: updatedCartItems,
           summary: {
             ...oldCart.summary,
             totalItems:
-              oldCart.summary.totalItems +
-              (quantity -
-                oldCart.cartItems.find(
-                  (item: any) => item.productId === productId,
-                )?.quantity || 0),
+              Number(oldCart.summary.totalItems ?? 0) +
+              (newQuantity - prevQuantity),
           },
         };
       });
+
       return { previousCart };
     },
     onSuccess: () => {

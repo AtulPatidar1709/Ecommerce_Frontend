@@ -72,10 +72,10 @@ export function CartItem({
           </div>
 
           <div className="text-right">
-            <p className="font-semibold">${item.subtotal.toFixed(2)}</p>
+            <p className="font-semibold">₹{item.subtotal?.toFixed(2)}</p>
             {item.product.price && (
               <p className="text-sm text-zinc-500 line-through">
-                ${item.product.price.toFixed(2)}
+                ₹{item.product.price?.toFixed(2)}
               </p>
             )}
           </div>

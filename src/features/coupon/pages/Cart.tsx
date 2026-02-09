@@ -11,6 +11,8 @@ const CartPage = () => {
     return <div>Loading cart...</div>;
   }
 
+  console.log("Cart ,", allCartItems);
+
   if (cartError) {
     return <div>Error loading cart Data</div>;
   }
@@ -44,7 +46,10 @@ const CartPage = () => {
         </div>
 
         {/* Order Summary */}
-        <OrderSummary subtotal={allCartItems?.summary.subtotal || 0} />
+        <OrderSummary
+          subtotal={allCartItems?.summary.subtotal || 0}
+          shipping={5.99}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 import { Link } from "react-router-dom";
-import { Menu, ShoppingCart, UserIcon, X } from "lucide-react";
+import { Menu, UserIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useCartDetails } from "@/features/cart/hooks/cart.hook";
+import { CartIcon } from "./CartIcon";
 
 const menuItems = [
   { name: "Products", href: "/products" },
@@ -116,10 +117,7 @@ export const Header = () => {
                 </ul>
               </div>
               <Separator orientation="vertical" />
-              <Button>
-                <ShoppingCart className="h-4 w-4" />
-                <span>{allCartItems?.summary?.totalItems || 0}</span>
-              </Button>
+              <CartIcon count={allCartItems?.summary?.totalItems || 0} />
               <Separator orientation="vertical" />
               <div className="flex w-full mr-3 flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                 {!user && (
