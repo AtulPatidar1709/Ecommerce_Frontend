@@ -1,80 +1,68 @@
-import { useUserQuery } from "@/features/auth/hooks/auth.hooks";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { addressApi } from "../api/address.api";
-import type { CreateAddressInputType } from "../schemas/address.schema";
 
-export const useAddresses = () => {
-  const { user } = useUserQuery();
+export const useAddresses = (enabled = true) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
+  // Fetch all addresses
   const addressesQuery = useQuery({
     queryKey: ["addresses"],
-    queryFn: () => addressApi.getAllAddresses(),
+    queryFn: addressApi.getAllAddresses,
     staleTime: 1000 * 60 * 60,
-    enabled: !!user,
+    enabled,
     retry: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
   });
 
-  const deleteAddressMutation = useMutation({
-    mutationFn: async (id: string) => addressApi.deleteAddressById(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["addresses"] });
-      toast.success("Address Deleted Success.");
-      navigate("/addresses");
-    },
-    onError: () => {
-      toast.error("Something went wrong.");
-      navigate("/addresses");
-    },
-  });
-
-  const deleteAddress = async (id: string) => deleteAddressMutation.mutate(id);
-
+  // Create address mutation
   const createAddressMutation = useMutation({
-    mutationFn: (values: CreateAddressInputType) =>
-      addressApi.createAddress(values),
-    onError: () => {
-      toast.error("Something went wrong.");
-    },
+    mutationFn: addressApi.createAddress,
     onSuccess: () => {
-      toast.success("Address Created Success.");
+      toast.success("Address created successfully");
       queryClient.invalidateQueries({ queryKey: ["addresses"] });
+    },
+    onError: () => {
+      toast.error("Failed to create address");
     },
   });
 
-  const createAddress = async (values: CreateAddressInputType) =>
-    createAddressMutation.mutate(values);
+  // Delete address mutation
+  const deleteAddressMutation = useMutation<void, Error, string>({
+    mutationFn: addressApi.deleteAddressById,
+    onSuccess: () => {
+      toast.success("Address deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["addresses"] });
+    },
+    onError: () => {
+      toast.error("Failed to delete address");
+    },
+  });
 
   return {
     addresses: addressesQuery.data,
-    deleteAddress,
-    createAddress,
-    isLoading:
-      addressesQuery.isLoading ||
-      deleteAddressMutation.isPending ||
-      createAddressMutation.isPending,
-    isError:
-      addressesQuery.isError ||
-      deleteAddressMutation.isError ||
-      createAddressMutation.isError,
+    isLoading: addressesQuery.isLoading,
+    isError: addressesQuery.isError,
+    createAddress: createAddressMutation.mutate,
+    createAddressAsync: createAddressMutation.mutateAsync,
+    deleteAddress: deleteAddressMutation.mutate,
+    deleteAddressAsync: deleteAddressMutation.mutateAsync,
+    createAddressMutation,
+    deleteAddressMutation,
   };
 };
 
 export const useAddress = (id: string) => {
-  const address = useQuery({
+  const addressQuery = useQuery({
     queryKey: ["address", id],
     queryFn: () => addressApi.getAddressById(id),
     staleTime: Infinity,
+    enabled: !!id,
   });
 
   return {
-    address,
-    isLoading: address.isLoading,
-    isError: address.isError,
+    address: addressQuery.data,
+    isLoading: addressQuery.isLoading,
+    isError: addressQuery.isError,
+    addressQuery,
   };
 };

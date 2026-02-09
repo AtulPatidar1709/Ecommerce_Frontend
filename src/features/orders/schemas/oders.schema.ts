@@ -1,7 +1,4 @@
-import {
-  cartItemValidation,
-  orderStatusSchema,
-} from "@/types/common/fields.schema";
+import { orderStatusSchema } from "@/types/common/fields.schema";
 import { z } from "zod";
 
 export const getOrdersQuerySchema = z.object({
@@ -27,9 +24,8 @@ export const getOrderByIdSchema = z.object({
 });
 
 export const createOrderSchema = z.object({
-  addressId: z.uuid("Invalid address ID"),
-  couponId: z.uuid("Invalid coupon ID").optional(),
-  cartItems: cartItemValidation,
+  addressId: z.string("Invalid address ID"),
+  couponId: z.string("Invalid coupon ID").optional(),
 });
 
 export const updateOrderStatusSchema = z.object({

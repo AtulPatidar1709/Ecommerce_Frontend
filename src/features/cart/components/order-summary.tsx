@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAddresses } from "@/features/address/hooks/address.hook";
 import { useCoupon } from "@/features/coupon/hooks/coupon.hook";
+import { useOrders } from "@/features/orders/hooks/orders.hook";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface CouponData {
   couponId: string;
@@ -13,34 +14,37 @@ interface CouponData {
   finalAmount: number;
 }
 
-export function OrderSummary({ subtotal }: { subtotal: number }) {
+interface OrderSummaryProps {
+  subtotal: number;
+}
+
+export function OrderSummary({ subtotal }: OrderSummaryProps) {
   const [couponCode, setCouponCode] = useState<string>("");
   const [couponData, setCouponData] = useState<CouponData | null>(null);
   const [appliedCouponCode, setAppliedCouponCode] = useState<string | null>(
     null,
   );
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
 
   const { addresses, isLoading: addressesLoading } = useAddresses();
-
   const { validateCoupon } = useCoupon();
+  const { createOrder, isLoading: orderIsLoading } = useOrders();
+  const navigate = useNavigate();
 
   const shipping = subtotal >= 1000 ? 0 : 5.99;
 
+  // Apply coupon
   async function applyCoupon(code: string, amount: number) {
     if (!code) return;
 
-    const coupon = await validateCoupon({
-      code,
-      orderAmount: amount,
-    });
-
+    const coupon = await validateCoupon({ code, orderAmount: amount });
     if (!coupon) return;
 
     setAppliedCouponCode(code);
     setCouponData(coupon);
   }
 
-  // 🔁 Recalculate coupon when cart subtotal changes
+  // Recalculate coupon when subtotal changes
   useEffect(() => {
     if (!appliedCouponCode) return;
 
@@ -51,7 +55,6 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
       });
 
       if (!coupon) {
-        // coupon no longer valid
         setAppliedCouponCode(null);
         setCouponData(null);
         return;
@@ -66,6 +69,31 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
   const discount = couponData?.discountAmount ?? 0;
   const total = Math.max(0, subtotal + shipping - discount);
 
+  // ✅ Create order handler
+  async function handleProceedToCheckout() {
+    if (!selectedAddress) {
+      alert("Please select a shipping address");
+      return;
+    }
+
+    console.log("Selected Address ,", selectedAddress);
+    console.log("Selected couponData ,", couponData);
+
+    const orderInput = {
+      addressId: selectedAddress,
+      couponId: couponData?.couponId,
+    };
+
+    try {
+      await createOrder(orderInput);
+      alert("Order placed successfully!");
+      navigate("/orders"); // Redirect to orders page
+    } catch (err) {
+      console.error("Failed to create order:", err);
+      alert("Failed to place order. Please try again.");
+    }
+  }
+
   return (
     <div className="rounded-xl bg-gradient-to-r from-gray-200 via-gray-100 to-pink-100 p-6">
       <h2 className="text-lg font-semibold">Order Summary</h2>
@@ -73,30 +101,29 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
         Review your order details and shipping information
       </p>
 
+      {/* Summary */}
       <div className="mb-4 space-y-3">
         <div className="flex justify-between">
           <span>Subtotal</span>
           <span>₹{subtotal.toFixed(2)}</span>
         </div>
-
         <div className="flex justify-between">
           <span>Shipping</span>
           <span>{shipping === 0 ? "FREE" : `₹${shipping.toFixed(2)}`}</span>
         </div>
-
         {couponData && (
           <div className="flex justify-between text-green-700">
             <span>Discount</span>
             <span>-₹{discount.toFixed(2)}</span>
           </div>
         )}
-
         <div className="flex justify-between text-lg font-semibold">
           <span>Total</span>
           <span>₹{total.toFixed(2)}</span>
         </div>
       </div>
 
+      {/* Coupon */}
       <div className="mb-4 flex gap-2">
         <Input
           type="text"
@@ -121,10 +148,11 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
         </div>
       )}
 
-      <div>
-        <h2 className="text-lg font-semibold">Select Address</h2>
+      {/* Address selection */}
+      <div className="mt-4">
+        <h2 className="text-lg font-semibold mb-2">Select Address</h2>
         {addressesLoading && <p>Loading addresses...</p>}
-        {addresses.length === 0 ? (
+        {addresses?.length === 0 ? (
           <div>
             <p className="text-sm text-zinc-400">
               No addresses found. Please add an address to proceed.
@@ -137,30 +165,30 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
             </Link>
           </div>
         ) : (
-          <select className="w-full rounded-md border-gray-300">
-            {addresses.map(
-              (address: {
-                id: string;
-                street: string;
-                city: string;
-                state: string;
-                zipCode: string;
-              }) => (
-                <option
-                  className="p-2 my-2"
-                  key={address.id}
-                  value={address.id}
-                >
-                  {address.street}, {address.city}, {address.state} -{" "}
-                  {address.zipCode}
-                </option>
-              ),
-            )}
+          <select
+            className="w-full rounded-md border-gray-300 p-2"
+            value={selectedAddress}
+            onChange={(e) => setSelectedAddress(e.target.value)}
+          >
+            <option value="">Select Address</option>
+            {addresses?.map((address: any) => (
+              <option key={address.id} value={address.id}>
+                {address.street}, {address.city}, {address.state} -{" "}
+                {address.zipCode}
+              </option>
+            ))}
           </select>
         )}
       </div>
 
-      <Button className="w-full" >Proceed to Checkout</Button>
+      {/* Proceed button */}
+      <Button
+        className="w-full mt-6"
+        onClick={handleProceedToCheckout}
+        disabled={orderIsLoading}
+      >
+        Proceed to Checkout
+      </Button>
     </div>
   );
 }

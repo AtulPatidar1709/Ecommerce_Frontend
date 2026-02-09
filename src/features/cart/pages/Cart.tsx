@@ -44,12 +44,12 @@ const CartPage = () => {
               item={item}
               isLoading={isUpdating}
               onIncrease={() =>
-                updateCartItemQuantity(item.productId, item.quantity + 1)
+                updateCartItemQuantity(item?.product?.id, item.quantity + 1)
               }
               onDecrease={() =>
-                updateCartItemQuantity(item.productId, item.quantity - 1)
+                updateCartItemQuantity(item?.product?.id, item.quantity - 1)
               }
-              onRemove={() => removeItemFromCart(item.productId)}
+              onRemove={() => removeItemFromCart(item?.product?.id)}
             />
           ))}
         </div>

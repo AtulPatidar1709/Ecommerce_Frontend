@@ -11,6 +11,8 @@ import NotFoundPage from "@/components/NotFoundPage";
 import Products from "@/features/products/pages/Products";
 import Addresses from "@/features/address/pages/Addresses";
 import CartPage from "@/features/cart/pages/Cart";
+import OrdersPage from "@/features/orders/pages/Orders";
+import OrderDetailsPage from "@/features/orders/pages/OrderDetails";
 
 export const routerPaths = createBrowserRouter([
   /* ================= 🌍 PUBLIC ================= */
@@ -73,6 +75,19 @@ export const routerPaths = createBrowserRouter([
           {
             path: "/cart",
             element: <CartPage />,
+          },
+          {
+            path: "/orders",
+            children: [
+              {
+                path: "",
+                element: <OrdersPage />,
+              },
+              {
+                path: ":id",
+                element: <OrderDetailsPage />,
+              },
+            ],
           },
         ],
       },
