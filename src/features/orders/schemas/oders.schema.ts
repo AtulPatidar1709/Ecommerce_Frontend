@@ -1,0 +1,42 @@
+import {
+  cartItemValidation,
+  orderStatusSchema,
+} from "@/types/common/fields.schema";
+import { z } from "zod";
+
+export const getOrdersQuerySchema = z.object({
+  page: z
+    .string()
+    .transform(Number)
+    .pipe(z.number().min(1))
+    .optional()
+    .default(1),
+  limit: z
+    .string()
+    .transform(Number)
+    .pipe(z.number().min(1).max(100))
+    .optional()
+    .default(10),
+  status: orderStatusSchema,
+  sortBy: z.enum(["createdAt", "totalAmount"]).optional().default("createdAt"),
+  order: z.enum(["asc", "desc"]).optional().default("desc"),
+});
+
+export const getOrderByIdSchema = z.object({
+  id: z.uuid("Invalid order ID"),
+});
+
+export const createOrderSchema = z.object({
+  addressId: z.uuid("Invalid address ID"),
+  couponId: z.uuid("Invalid coupon ID").optional(),
+  cartItems: cartItemValidation,
+});
+
+export const updateOrderStatusSchema = z.object({
+  status: orderStatusSchema,
+});
+
+export type GetOrdersQuery = z.infer<typeof getOrdersQuerySchema>;
+export type GetOrderByIdInput = z.infer<typeof getOrderByIdSchema>;
+export type CreateOrderInput = z.infer<typeof createOrderSchema>;
+export type UpdateOrderStatusInput = z.infer<typeof updateOrderStatusSchema>;

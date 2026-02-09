@@ -15,6 +15,17 @@ const CartPage = () => {
     return <div>Error loading cart Data</div>;
   }
 
+  if (!allCartItems || allCartItems.cartItems.length === 0) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-8 text-center">
+        <h1 className="mb-4 text-2xl font-bold">Your Cart is Empty</h1>
+        <p className="text-zinc-500">
+          Looks like you haven't added anything to your cart yet.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 ">
       <h1 className="mb-6 text-2xl font-bold">
@@ -27,7 +38,7 @@ const CartPage = () => {
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
         {/* Cart Items */}
         <div className="space-y-4">
-          {allCartItems?.cartItems.map((item) => (
+          {allCartItems?.cartItems.map((item: any) => (
             <CartItem
               key={item.id}
               item={item}

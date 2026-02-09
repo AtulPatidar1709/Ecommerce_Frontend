@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAddresses } from "@/features/address/hooks/address.hook";
 import { useCoupon } from "@/features/coupon/hooks/coupon.hook";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface CouponData {
   couponId: string;
@@ -17,6 +19,8 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
   const [appliedCouponCode, setAppliedCouponCode] = useState<string | null>(
     null,
   );
+
+  const { addresses, isLoading: addressesLoading } = useAddresses();
 
   const { validateCoupon } = useCoupon();
 
@@ -117,7 +121,46 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
         </div>
       )}
 
-      <Button className="w-full">Proceed to Checkout</Button>
+      <div>
+        <h2 className="text-lg font-semibold">Select Address</h2>
+        {addressesLoading && <p>Loading addresses...</p>}
+        {addresses.length === 0 ? (
+          <div>
+            <p className="text-sm text-zinc-400">
+              No addresses found. Please add an address to proceed.
+            </p>
+            <Link
+              className="text-blue-500 hover:underline p-1 rounded-md inline-block my-2"
+              to="/addresses"
+            >
+              Add Address
+            </Link>
+          </div>
+        ) : (
+          <select className="w-full rounded-md border-gray-300">
+            {addresses.map(
+              (address: {
+                id: string;
+                street: string;
+                city: string;
+                state: string;
+                zipCode: string;
+              }) => (
+                <option
+                  className="p-2 my-2"
+                  key={address.id}
+                  value={address.id}
+                >
+                  {address.street}, {address.city}, {address.state} -{" "}
+                  {address.zipCode}
+                </option>
+              ),
+            )}
+          </select>
+        )}
+      </div>
+
+      <Button className="w-full" >Proceed to Checkout</Button>
     </div>
   );
 }
