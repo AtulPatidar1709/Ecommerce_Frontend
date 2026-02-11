@@ -8,7 +8,9 @@ export const ordersApi = {
     axiosApi.get(`/orders/${id}`).then((res) => res.data),
 
   createOrder: (data: CreateOrderInput) =>
-    axiosApi.post(`/orders/`, { data }).then((res) => res.data),
+    axiosApi.post(`/orders/`, { data }).then((res) => {
+      return res.data.order;
+    }),
 
   deleteOrderById: (id: string) =>
     axiosApi.delete(`/orders/${id}`).then((res) => res.data),

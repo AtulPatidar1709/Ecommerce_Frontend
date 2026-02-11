@@ -19,8 +19,6 @@ export const RouteGuard = ({
 }: GuardProps) => {
   const { user, isUserLoading } = useUserQuery();
 
-  console.log("user details is ", user);
-
   if (isUserLoading) return <Skeleton />;
 
   // Guest only (login / signup)

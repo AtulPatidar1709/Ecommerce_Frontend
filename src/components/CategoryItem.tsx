@@ -10,8 +10,6 @@ export const CategoryItem = ({
 
   name = name.toUpperCase();
 
-  console.log("name in category section ,", name);
-
   function handleCategoryClick() {
     navigate(`/products?categories=${name}`);
   }

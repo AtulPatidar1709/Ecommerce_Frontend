@@ -1,16 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { ordersApi } from "../api/orders.api";
-import type { CreateOrderInput } from "../schemas/oders.schema";
-
-// Define the Order type (add your fields here)
-export type Order = {
-  id: string;
-  totalAmount: number;
-  createdAt: string;
-  orderItems: any[];
-  // Add more fields based on your schema
-};
+import type { CreateOrderInput, Order } from "../schemas/oders.schema";
 
 export const useOrders = () => {
   const queryClient = useQueryClient();
@@ -27,14 +18,26 @@ export const useOrders = () => {
   // Create order mutation
   const createOrderMutation = useMutation<Order, Error, CreateOrderInput>({
     mutationFn: ordersApi.createOrder,
-    onSuccess: (newOrder) => {
+    onSuccess: () => {
       toast.success("Order created successfully");
-      // Add new order to cache for instant UI update
-      queryClient.setQueryData<Order[]>(["orders"], (old) =>
-        old ? [newOrder, ...old] : [newOrder],
-      );
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
-    onError: () => {
+    onMutate: async (newOrder) => {
+      await queryClient.cancelQueries({ queryKey: ["orders"] });
+      const previousOrders =
+        queryClient.getQueryData<Order[]>(["orders"]) || [];
+      queryClient.setQueryData<Order[]>(["orders"], (old: any) => [
+        ...(old || []),
+        { ...newOrder, id: `temp-${Date.now()}` },
+      ]);
+      return { previousOrders };
+    },
+    onError: (_, __, context: any) => {
+      queryClient.setQueryData<Order[]>(
+        ["orders"],
+        context?.previousOrders || [],
+      );
       toast.error("Failed to create order");
     },
   });
@@ -44,7 +47,6 @@ export const useOrders = () => {
     mutationFn: ordersApi.deleteOrderById,
     onSuccess: (_, orderId) => {
       toast.success("Order deleted successfully");
-      // Remove deleted order from cache
       queryClient.setQueryData<Order[]>(["orders"], (old) =>
         old ? old.filter((order) => order.id !== orderId) : [],
       );

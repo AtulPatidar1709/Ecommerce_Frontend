@@ -7,8 +7,6 @@ export default function OrdersPage() {
   const { getAllOrders, isLoading } = useOrders();
   const navigate = useNavigate();
 
-  console.log("Get All Orders ", getAllOrders);
-
   if (isLoading) {
     return (
       <div className="p-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">

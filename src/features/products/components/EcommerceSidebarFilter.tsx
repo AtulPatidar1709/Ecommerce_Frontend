@@ -23,9 +23,6 @@ export default function EcommerceSidebarFilter({
 }: SidebarContentProps) {
   const [params] = useSearchParams();
   const categoriesParams = params.getAll("categories");
-
-  console.log("categories in sidebar filter ,", categoriesParams);
-
   useEffect(() => {
     if (categoriesParams.length > 0) {
       toggleArrayValue("categories", categoriesParams[0] || "");

@@ -11,8 +11,6 @@ const CartPage = () => {
     return <div>Loading cart...</div>;
   }
 
-  console.log("Cart ,", allCartItems);
-
   if (cartError) {
     return <div>Error loading cart Data</div>;
   }

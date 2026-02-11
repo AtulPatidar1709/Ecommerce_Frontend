@@ -49,9 +49,6 @@ export function SignupForm({
   });
 
   const onSubmit = (values: RegisterInput) => {
-    const { confirmPassword, ...payload } = values;
-    console.log("Signup payload (send to backend):", payload);
-    console.log(confirmPassword);
     register(values);
   };
 

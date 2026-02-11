@@ -45,7 +45,6 @@ export function LoginForm({
   });
 
   const onSubmit = (values: LoginInput) => {
-    console.log("Login values:", values);
     login(values);
   };
 

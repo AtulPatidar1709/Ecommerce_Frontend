@@ -24,13 +24,28 @@ export const getOrderByIdSchema = z.object({
 });
 
 export const createOrderSchema = z.object({
-  addressId: z.string("Invalid address ID"),
-  couponId: z.string("Invalid coupon ID").optional(),
+  addressId: z.string().min(1, "Invalid address ID"),
+  couponId: z.string().optional(),
+  paymentMethod: z.enum(["COD", "RAZORPAY"]).default("COD"),
 });
 
 export const updateOrderStatusSchema = z.object({
   status: orderStatusSchema,
 });
+
+export type OrderItem = {
+  product: {
+    id: string;
+  };
+};
+
+export type Order = {
+  id: string;
+  totalAmount: number;
+  createdAt: string;
+  orderItems: OrderItem[];
+  status: "PENDING" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+};
 
 export type GetOrdersQuery = z.infer<typeof getOrdersQuerySchema>;
 export type GetOrderByIdInput = z.infer<typeof getOrderByIdSchema>;

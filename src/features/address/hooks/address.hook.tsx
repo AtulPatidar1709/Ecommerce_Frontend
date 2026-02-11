@@ -33,8 +33,8 @@ export const useAddresses = (enabled = true) => {
       toast.success("Address deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["addresses"] });
     },
-    onError: () => {
-      toast.error("Failed to delete address");
+    onError: (error) => {
+      toast.error(error?.message || "Failed to delete address");
     },
   });
 

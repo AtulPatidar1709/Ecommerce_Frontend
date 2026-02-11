@@ -38,7 +38,6 @@ const Addresses = () => {
 
   if (isLoading) return <CardSkeleton />;
 
-  console.log("Addresses is ", addresses);
   if (isError || !addresses) {
     toast.error("Failed to load addresses");
     navigate("/");

@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAddresses } from "@/features/address/hooks/address.hook";
 import { useCoupon } from "@/features/coupon/hooks/coupon.hook";
-import { useOrders } from "@/features/orders/hooks/orders.hook";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { addRazorPayQueryScript } from "../utils/addRazorPayScript";
+import { usePaymentInitiate } from "@/features/payment/initiatePayment";
 
 interface CouponData {
   couponId: string;
@@ -25,11 +26,14 @@ export function OrderSummary({ subtotal }: OrderSummaryProps) {
     null,
   );
   const [selectedAddress, setSelectedAddress] = useState<string>("");
-
+  const [selectedPaymentMethod, setPaymentMethod] = useState<
+    "COD" | "RAZORPAY"
+  >("COD");
   const { addresses, isLoading: addressesLoading } = useAddresses();
+  const { handleCheckout, orderIsLoading, paymentIsLoading } =
+    usePaymentInitiate();
+
   const { validateCoupon } = useCoupon();
-  const { createOrder, isLoading: orderIsLoading } = useOrders();
-  const navigate = useNavigate();
 
   const shipping = subtotal >= 1000 ? 0 : 5.99;
 
@@ -66,33 +70,12 @@ export function OrderSummary({ subtotal }: OrderSummaryProps) {
     return () => clearTimeout(timer);
   }, [subtotal, appliedCouponCode]);
 
+  useEffect(() => {
+    addRazorPayQueryScript();
+  }, []);
+
   const discount = couponData?.discountAmount ?? 0;
   const total = Math.max(0, subtotal + shipping - discount);
-
-  // ✅ Create order handler
-  async function handleProceedToCheckout() {
-    if (!selectedAddress) {
-      alert("Please select a shipping address");
-      return;
-    }
-
-    console.log("Selected Address ,", selectedAddress);
-    console.log("Selected couponData ,", couponData);
-
-    const orderInput = {
-      addressId: selectedAddress,
-      couponId: couponData?.couponId,
-    };
-
-    try {
-      await createOrder(orderInput);
-      alert("Order placed successfully!");
-      navigate("/orders"); // Redirect to orders page
-    } catch (err) {
-      console.error("Failed to create order:", err);
-      alert("Failed to place order. Please try again.");
-    }
-  }
 
   return (
     <div className="rounded-xl bg-gradient-to-r from-gray-200 via-gray-100 to-pink-100 p-6">
@@ -180,12 +163,31 @@ export function OrderSummary({ subtotal }: OrderSummaryProps) {
           </select>
         )}
       </div>
+      <div>
+        <select
+          className="w-full rounded-md border-gray-300 p-2"
+          value={selectedPaymentMethod}
+          onChange={(e) =>
+            setPaymentMethod(e.target.value as "COD" | "RAZORPAY")
+          }
+        >
+          <option value="">Select Payment Method</option>
+          <option value="COD">Cash on Delivery</option>
+          <option value="RAZORPAY">Credit/Debit Card</option>
+        </select>
+      </div>
 
       {/* Proceed button */}
       <Button
         className="w-full mt-6"
-        onClick={handleProceedToCheckout}
-        disabled={orderIsLoading}
+        onClick={() =>
+          handleCheckout({
+            addressId: selectedAddress,
+            couponId: couponData?.couponId,
+            paymentMethod: selectedPaymentMethod,
+          })
+        }
+        disabled={orderIsLoading || paymentIsLoading}
       >
         Proceed to Checkout
       </Button>
