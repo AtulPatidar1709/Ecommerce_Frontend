@@ -3,6 +3,7 @@ import { z } from "zod";
 export const CartItemSchema = z.object({
   id: z.string(),
   product: z.object({
+    id: z.string(),
     title: z.string(),
     price: z.number(),
     discountPrice: z.number(),

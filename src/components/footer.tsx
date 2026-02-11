@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import type React from "react";
 import type { ComponentProps, ReactNode } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../public/logo.jpg";
+import logo from "@/assets/logo.avif";
 
 type FooterLink = {
   title: string;

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { addRazorPayQueryScript } from "../utils/addRazorPayScript";
 import { usePaymentInitiate } from "@/features/payment/initiatePayment";
+import type { CreateAddressInputType } from "@/features/address/schemas/address.schema";
 
 interface CouponData {
   couponId: string;
@@ -78,7 +79,7 @@ export function OrderSummary({ subtotal }: OrderSummaryProps) {
   const total = Math.max(0, subtotal + shipping - discount);
 
   return (
-    <div className="rounded-xl bg-gradient-to-r from-gray-200 via-gray-100 to-pink-100 p-6">
+    <div className="rounded-xl bg-linear-to-r from-gray-200 via-gray-100 to-pink-100 p-6">
       <h2 className="text-lg font-semibold">Order Summary</h2>
       <p className="mb-4 text-sm text-zinc-400">
         Review your order details and shipping information
@@ -154,10 +155,10 @@ export function OrderSummary({ subtotal }: OrderSummaryProps) {
             onChange={(e) => setSelectedAddress(e.target.value)}
           >
             <option value="">Select Address</option>
-            {addresses?.map((address: any) => (
+            {addresses?.map((address: CreateAddressInputType) => (
               <option key={address.id} value={address.id}>
                 {address.street}, {address.city}, {address.state} -{" "}
-                {address.zipCode}
+                {address.pincode}
               </option>
             ))}
           </select>

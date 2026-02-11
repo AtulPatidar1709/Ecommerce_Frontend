@@ -1,6 +1,8 @@
+import { Loader_Skeleton } from "@/components/skeletons/Loader_Skeleton";
 import { CartItem } from "../components/cart-item";
 import { OrderSummary } from "../components/order-summary";
 import { useCartDetails, useUpdateCartItems } from "../hooks/cart.hook";
+import type { CartItemTypes } from "../schema/cart.schema";
 
 const CartPage = () => {
   const { allCartItems, cartIsLoading, cartError } = useCartDetails();
@@ -8,7 +10,7 @@ const CartPage = () => {
     useUpdateCartItems();
 
   if (cartIsLoading) {
-    return <div>Loading cart...</div>;
+    return <Loader_Skeleton />;
   }
 
   if (cartError) {
@@ -38,7 +40,7 @@ const CartPage = () => {
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
         {/* Cart Items */}
         <div className="space-y-4">
-          {allCartItems?.cartItems.map((item: any) => (
+          {allCartItems?.cartItems.map((item: CartItemTypes) => (
             <CartItem
               key={item.id}
               item={item}

@@ -6,7 +6,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { useScroll } from "motion/react";
 import { Separator } from "@/components/ui/separator";
-import logo from "../../public/logo.jpg";
+import logo from "@/assets/logo.avif";
 import { useUserQuery } from "@/features/auth/hooks/auth.hooks";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
