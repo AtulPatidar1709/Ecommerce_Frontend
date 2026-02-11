@@ -19,7 +19,7 @@ function openRazorPayPopUp({
       name: user.name,
       email: user.email,
     },
-    handler: async (response: any) => {
+    handler: async (response) => {
       try {
         const data = await paymentApi.verifyPayment({
           razorpayOrderId: response.razorpay_order_id,
@@ -44,7 +44,7 @@ function openRazorPayPopUp({
     },
   });
 
-  rzp.on("payment.failed", (response: any) => {
+  rzp.on("payment.failed", (response) => {
     onClose(response.error?.description ?? "Payment failed");
   });
 

@@ -1,6 +1,10 @@
-import { CartItem } from "../components/cart-item";
-import { OrderSummary } from "../components/order-summary";
-import { useCartDetails, useUpdateCartItems } from "../hooks/cart.hook";
+import { CartItem } from "@/features/cart/components/cart-item";
+import { OrderSummary } from "@/features/cart/components/order-summary";
+import {
+  useCartDetails,
+  useUpdateCartItems,
+} from "@/features/cart/hooks/cart.hook";
+import type { CartItemTypes } from "@/features/cart/schema/cart.schema";
 
 const CartPage = () => {
   const { allCartItems, cartIsLoading, cartError } = useCartDetails();
@@ -27,7 +31,7 @@ const CartPage = () => {
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
         {/* Cart Items */}
         <div className="space-y-4">
-          {allCartItems?.cartItems.map((item) => (
+          {allCartItems?.cartItems.map((item: CartItemTypes) => (
             <CartItem
               key={item.id}
               item={item}
@@ -44,10 +48,7 @@ const CartPage = () => {
         </div>
 
         {/* Order Summary */}
-        <OrderSummary
-          subtotal={allCartItems?.summary.subtotal || 0}
-          shipping={5.99}
-        />
+        <OrderSummary subtotal={allCartItems?.summary.subtotal || 0} />
       </div>
     </div>
   );

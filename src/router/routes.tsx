@@ -1,18 +1,25 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+import { lazy, Suspense } from "react";
 import { UserLayout } from "./user.routes";
 import { AuthLayout } from "./login.routes";
 import { RouteGuard } from "./guards";
-import Login from "@/features/auth/pages/Login";
-import SignUp from "@/features/auth/pages/SignUp";
-import VerifyOtp from "@/features/auth/pages/VerifyOtp";
-import ProductDetails from "@/features/products/pages/ProductDetails";
-import NotFoundPage from "@/components/NotFoundPage";
-import Products from "@/features/products/pages/Products";
-import Addresses from "@/features/address/pages/Addresses";
-import CartPage from "@/features/cart/pages/Cart";
-import OrdersPage from "@/features/orders/pages/Orders";
-import OrderDetailsPage from "@/features/orders/pages/OrderDetails";
+import Home from "@/pages/Home";
+import { Loader_Skeleton } from "@/components/skeletons/Loader_Skeleton";
+
+const Login = lazy(() => import("@/features/auth/pages/Login"));
+const SignUp = lazy(() => import("@/features/auth/pages/SignUp"));
+const VerifyOtp = lazy(() => import("@/features/auth/pages/VerifyOtp"));
+const ProductDetails = lazy(
+  () => import("@/features/products/pages/ProductDetails"),
+);
+const Products = lazy(() => import("@/features/products/pages/Products"));
+const Addresses = lazy(() => import("@/features/address/pages/Addresses"));
+const CartPage = lazy(() => import("@/features/cart/pages/Cart"));
+const OrdersPage = lazy(() => import("@/features/orders/pages/Orders"));
+const OrderDetailsPage = lazy(
+  () => import("@/features/orders/pages/OrderDetails"),
+);
+const NotFoundPage = lazy(() => import("@/components/NotFoundPage"));
 
 export const routerPaths = createBrowserRouter([
   /* ================= 🌍 PUBLIC ================= */
@@ -26,11 +33,21 @@ export const routerPaths = createBrowserRouter([
       },
       {
         path: "/products/:slug",
-        element: <ProductDetails />,
+        element: (
+          <Suspense fallback={<Loader_Skeleton />}>
+            {" "}
+            <ProductDetails />{" "}
+          </Suspense>
+        ),
       },
       {
         path: "/products/",
-        element: <Products />,
+        element: (
+          <Suspense fallback={<Loader_Skeleton />}>
+            {" "}
+            <Products />{" "}
+          </Suspense>
+        ),
       },
     ],
   },
@@ -42,8 +59,24 @@ export const routerPaths = createBrowserRouter([
       {
         element: <AuthLayout />,
         children: [
-          { path: "/login", element: <Login /> },
-          { path: "/signup", element: <SignUp /> },
+          {
+            path: "/login",
+            element: (
+              <Suspense fallback={<Loader_Skeleton />}>
+                {" "}
+                <Login />{" "}
+              </Suspense>
+            ),
+          },
+          {
+            path: "/signup",
+            element: (
+              <Suspense fallback={<Loader_Skeleton />}>
+                {" "}
+                <SignUp />{" "}
+              </Suspense>
+            ),
+          },
         ],
       },
     ],
@@ -55,7 +88,17 @@ export const routerPaths = createBrowserRouter([
     children: [
       {
         element: <AuthLayout />,
-        children: [{ path: "/verify-otp", element: <VerifyOtp /> }],
+        children: [
+          {
+            path: "/verify-otp",
+            element: (
+              <Suspense fallback={<Loader_Skeleton />}>
+                {" "}
+                <VerifyOtp />{" "}
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
@@ -70,22 +113,42 @@ export const routerPaths = createBrowserRouter([
         children: [
           {
             path: "/addresses",
-            element: <Addresses />,
+            element: (
+              <Suspense fallback={<Loader_Skeleton />}>
+                {" "}
+                <Addresses />{" "}
+              </Suspense>
+            ),
           },
           {
             path: "/cart",
-            element: <CartPage />,
+            element: (
+              <Suspense fallback={<Loader_Skeleton />}>
+                {" "}
+                <CartPage />{" "}
+              </Suspense>
+            ),
           },
           {
             path: "/orders",
             children: [
               {
                 path: "",
-                element: <OrdersPage />,
+                element: (
+                  <Suspense fallback={<Loader_Skeleton />}>
+                    {" "}
+                    <OrdersPage />{" "}
+                  </Suspense>
+                ),
               },
               {
                 path: ":id",
-                element: <OrderDetailsPage />,
+                element: (
+                  <Suspense fallback={<Loader_Skeleton />}>
+                    {" "}
+                    <OrderDetailsPage />{" "}
+                  </Suspense>
+                ),
               },
             ],
           },
@@ -97,6 +160,16 @@ export const routerPaths = createBrowserRouter([
   /* ================= ❌ FALLBACK ================= */
   {
     element: <AuthLayout />,
-    children: [{ path: "*", element: <NotFoundPage /> }],
+    children: [
+      {
+        path: "*",
+        element: (
+          <Suspense fallback={<Loader_Skeleton />}>
+            {" "}
+            <NotFoundPage />{" "}
+          </Suspense>
+        ),
+      },
+    ],
   },
 ]);

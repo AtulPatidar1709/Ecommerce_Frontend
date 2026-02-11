@@ -3,12 +3,17 @@ import { SideBanner } from "./SideBanner";
 
 import { useBannersQuery } from "@/features/products/hooks/banner.hook";
 import type { CreateBannerInput } from "@/features/products/schemas/banner.schema";
+import { Loader_Skeleton } from "./skeletons/Loader_Skeleton";
 
 export default function HeroSection() {
   const { banners, isBannersLoading, isBannersError } = useBannersQuery();
 
   if (isBannersLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader_Skeleton />
+      </div>
+    );
   }
 
   if (isBannersError) {

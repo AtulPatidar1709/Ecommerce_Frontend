@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ProductTypes } from "@/features/products/schemas/product.schema";
+import { useUpdateCartItems } from "@/features/cart/hooks/cart.hook";
 
 const ProductCard = (product: ProductTypes) => {
   const thumbnail = product.images?.[0]?.imageUrl;
@@ -17,6 +18,8 @@ const ProductCard = (product: ProductTypes) => {
   const discountPercentage = discountPrice
     ? Math.round(((price - discountPrice) / price) * 100)
     : 0;
+
+  const { updateCartItemQuantity, isUpdating } = useUpdateCartItems();
 
   return (
     <Card className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-background transition hover:shadow-xl">
@@ -72,7 +75,11 @@ const ProductCard = (product: ProductTypes) => {
         </div>
 
         <div className="flex gap-2 pt-2">
-          <Button size="icon" disabled={product.stock === 0}>
+          <Button
+            size="icon"
+            disabled={product.stock === 0 || isUpdating}
+            onClick={() => updateCartItemQuantity(product.id, 1)}
+          >
             <ShoppingCart className="h-4 w-4" />
           </Button>
 

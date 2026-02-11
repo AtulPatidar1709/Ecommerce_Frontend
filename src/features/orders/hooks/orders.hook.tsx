@@ -1,13 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { ordersApi } from "../api/orders.api";
-import type { CreateOrderInput, Order } from "../schemas/oders.schema";
+import type {
+  CreateOrderInput,
+  OrderItem,
+  OrderSummary,
+} from "../schemas/oders.schema";
 
 export const useOrders = () => {
   const queryClient = useQueryClient();
 
   // Fetch all orders
-  const getAllOrdersQuery = useQuery<Order[], Error>({
+  const getAllOrdersQuery = useQuery<OrderSummary[], Error>({
     queryKey: ["orders"],
     queryFn: ordersApi.getAllOrders,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -16,7 +20,7 @@ export const useOrders = () => {
   });
 
   // Create order mutation
-  const createOrderMutation = useMutation<Order, Error, CreateOrderInput>({
+  const createOrderMutation = useMutation<OrderItem, Error, CreateOrderInput>({
     mutationFn: ordersApi.createOrder,
     onSuccess: () => {
       toast.success("Order created successfully");
@@ -26,15 +30,15 @@ export const useOrders = () => {
     onMutate: async (newOrder) => {
       await queryClient.cancelQueries({ queryKey: ["orders"] });
       const previousOrders =
-        queryClient.getQueryData<Order[]>(["orders"]) || [];
-      queryClient.setQueryData<Order[]>(["orders"], (old: any) => [
+        queryClient.getQueryData<OrderItem[]>(["orders"]) || [];
+      queryClient.setQueryData<OrderItem[]>(["orders"], (old: any) => [
         ...(old || []),
         { ...newOrder, id: `temp-${Date.now()}` },
       ]);
       return { previousOrders };
     },
     onError: (_, __, context: any) => {
-      queryClient.setQueryData<Order[]>(
+      queryClient.setQueryData<OrderItem[]>(
         ["orders"],
         context?.previousOrders || [],
       );
@@ -47,7 +51,7 @@ export const useOrders = () => {
     mutationFn: ordersApi.deleteOrderById,
     onSuccess: (_, orderId) => {
       toast.success("Order deleted successfully");
-      queryClient.setQueryData<Order[]>(["orders"], (old) =>
+      queryClient.setQueryData<OrderItem[]>(["orders"], (old) =>
         old ? old.filter((order) => order.id !== orderId) : [],
       );
     },

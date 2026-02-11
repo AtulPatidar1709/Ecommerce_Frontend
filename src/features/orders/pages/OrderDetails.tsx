@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useOrder } from "../hooks/orders.hook";
+import Order_Loader from "@/components/skeletons/Order_Loader";
+import type { OrderItem } from "../schemas/oders.schema";
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -10,18 +11,11 @@ export default function OrderDetailsPage() {
   const { order, isLoading } = useOrder(id!);
 
   if (isLoading || !order) {
-    return (
-      <div className="p-6 max-w-4xl mx-auto space-y-2">
-        <Skeleton className="h-6 w-40" />
-        <Skeleton className="h-6 w-64" />
-        <Skeleton className="h-6 w-full" />
-        <Skeleton className="h-6 w-full" />
-      </div>
-    );
+    return <Order_Loader />;
   }
 
   const shippingAddress = order.address
-    ? `${order.address.street}, ${order.address.city}, ${order.address.state} - ${order.address.zipCode}`
+    ? `${order.address.street}, ${order.address.city}, ${order.address.state} - ${order.address.pincode}`
     : "No shipping address";
 
   const paymentStatus = order.payment?.status || "Not Paid";
@@ -68,7 +62,7 @@ export default function OrderDetailsPage() {
           <p className="text-sm text-zinc-400">Payment Status</p>
           <p
             className={`font-medium ${
-              paymentStatus === "Paid" ? "text-green-600" : "text-red-600"
+              paymentStatus === "SUCCESS" ? "text-green-600" : "text-red-600"
             }`}
           >
             {paymentStatus}
@@ -83,7 +77,7 @@ export default function OrderDetailsPage() {
       {/* Items */}
       <h2 className="text-xl font-semibold mb-2">Items</h2>
       <div className="space-y-4">
-        {order.orderItems?.map((item) => (
+        {order.orderItems?.map((item: OrderItem) => (
           <Card
             key={item.id}
             className="p-4 flex flex-col sm:flex-row items-center sm:justify-between space-y-2 sm:space-y-0"
@@ -102,7 +96,8 @@ export default function OrderDetailsPage() {
             <p className="font-semibold text-lg">
               ₹
               {(
-                item.product.discountPrice ?? item.product.price * item.quantity
+                item.product.discountPrice ??
+                item.product.price! * item.quantity
               ).toFixed(2)}
             </p>
           </Card>

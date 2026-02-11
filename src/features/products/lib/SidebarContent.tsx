@@ -24,8 +24,6 @@ import {
 } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 
-const RATINGS = [5, 4, 3];
-
 const SidebarContent = ({
   filters,
   updateFilters,
@@ -119,22 +117,6 @@ const SidebarContent = ({
                     }
                   />
                   {category.name}
-                </label>
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-
-          {/* Ratings */}
-          <AccordionItem value="rating">
-            <AccordionTrigger>Customer Ratings</AccordionTrigger>
-            <AccordionContent className="space-y-2">
-              {RATINGS.map((rating) => (
-                <label key={rating} className="flex items-center gap-2 text-sm">
-                  <Checkbox
-                    checked={filters.ratings.includes(rating)}
-                    onCheckedChange={() => toggleArrayValue("ratings", rating)}
-                  />
-                  {rating}★ & above
                 </label>
               ))}
             </AccordionContent>

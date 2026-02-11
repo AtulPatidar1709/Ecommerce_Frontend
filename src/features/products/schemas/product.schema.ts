@@ -29,7 +29,7 @@ export const getAllProductsQuerySchema = z.object({
 
 export const ImageSchema = z.object({
   imageUrl: z.string(),
-  isPrimary: z.boolean(),
+  isPrimary: z.boolean().optional(),
 });
 
 export const ProductSectionSchema = z.object({

@@ -1,12 +1,17 @@
 import { useCategoryDetails } from "@/features/category/hooks/category.hook";
 import { CategorySlider } from "./CategorySlider";
+import { Loader_Skeleton } from "./skeletons/Loader_Skeleton";
 
 export default function CategorySection() {
   const { allCategories, categoriesIsLoading, categoriesError } =
     useCategoryDetails();
 
   if (categoriesIsLoading)
-    return <div className="text-center py-6">Loading...</div>;
+    return (
+      <div>
+        <Loader_Skeleton />
+      </div>
+    );
 
   if (categoriesError)
     return (

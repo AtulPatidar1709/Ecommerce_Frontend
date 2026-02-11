@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { BsCart3 } from "react-icons/bs";
 import { useUpdateCartItems } from "@/features/cart/hooks/cart.hook";
+import CardSkeleton from "@/components/CardSkeleton";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -30,7 +31,7 @@ const ProductDetails = () => {
 
   const [mainImage, setMainImage] = useState<string | null>(null);
 
-  if (productIsLoading) return <div>Loading...</div>;
+  if (productIsLoading) return <CardSkeleton />;
 
   if (productError) return <div>Loading...</div>;
 
