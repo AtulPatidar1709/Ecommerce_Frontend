@@ -44,6 +44,8 @@ export function SideBanner({
               duration-300
               group-hover:scale-105
             "
+            width={600}
+            height={600}
           />
         </div>
       </CardContent>

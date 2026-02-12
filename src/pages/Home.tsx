@@ -8,18 +8,19 @@ import { useProductQuery } from "@/features/products/hooks/products.hook";
 
 const Home = () => {
   const { products, isProductLoading } = useProductQuery();
-
-  if (isProductLoading) {
-    return <Loader_Skeleton />;
-  }
-
   return (
     <div>
       <HeroSection />
       <CategorySection />
       <FeaturesBar />
-      <ProductSlider items={products ?? []} />
-      <ProductsSection items={products ?? []} />
+      {isProductLoading ? (
+        <Loader_Skeleton />
+      ) : (
+        <>
+          <ProductSlider items={products ?? []} />
+          <ProductsSection items={products ?? []} />
+        </>
+      )}
     </div>
   );
 };

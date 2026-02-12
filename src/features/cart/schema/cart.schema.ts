@@ -9,7 +9,8 @@ export const CartItemSchema = z.object({
     discountPrice: z.number(),
     images: z.array(
       z.object({
-        imageUrl: z.string().url(),
+        publicId: z.url(),
+        imageUrl: z.string(),
       }),
     ),
   }),

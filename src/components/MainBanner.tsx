@@ -42,6 +42,8 @@ export function MainBanner({ banner }: { banner: CreateBannerInput }) {
               duration-300
               hover:scale-105
             "
+            width={600}
+            height={600}
           />
         </div>
       </div>
