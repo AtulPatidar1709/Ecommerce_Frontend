@@ -1,11 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { ProductTypes } from "@/features/products/schemas/product.schema";
 import { useUpdateCartItems } from "@/features/cart/hooks/cart.hook";
 import { cloudinaryUrl } from "@/lib/cloudinary";
+import type { ProductTypes } from "../schemas/product.schema";
 
 const ProductCard = (product: ProductTypes) => {
   const thumbnail = product.images?.[0]?.publicId;
@@ -23,33 +22,44 @@ const ProductCard = (product: ProductTypes) => {
   const { updateCartItemQuantity, isUpdating } = useUpdateCartItems();
 
   return (
-    <Card className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-background transition hover:shadow-xl">
-      {/* Discount Badge */}
+    <div
+      className="
+        group
+        relative
+        flex
+        h-[360px]
+        flex-col
+        overflow-hidden
+        rounded-2xl
+        border
+        bg-background
+        transition
+        hover:-translate-y-0.5
+        hover:shadow-xl
+      "
+    >
       {discountPercentage > 0 && (
-        <Badge className="absolute left-0 top-0 z-20 rounded-none rounded-br-xl bg-red-600 px-3 py-1 text-xs font-semibold text-white">
+        <Badge className="absolute left-0 top-0 z-10 rounded-none rounded-br-xl bg-red-600 px-2 py-1 text-xs font-semibold text-white">
           {discountPercentage}% OFF
         </Badge>
       )}
 
-      {/* Image Wrapper — FIXED HEIGHT */}
-      <div className="relative aspect-auto w-full bg-muted">
+      <div className="relative flex h-[180px] items-center justify-center bg-muted p-2">
         <img
-          src={cloudinaryUrl(thumbnail, { size: "THUMB" })}
+          src={cloudinaryUrl(thumbnail, { size: "GRID" })}
           alt={product.title}
           loading="lazy"
           className="
-            h-full
-            w-full
+            max-h-full
+            max-w-full
             object-contain
-            p-1
             transition-transform
             duration-300
             group-hover:scale-105
           "
-          aria-label={`Category Banner - ${product.title}`}
           srcSet={`
             ${cloudinaryUrl(thumbnail, { size: "GRID" })} 1x,
-            ${cloudinaryUrl(thumbnail, { size: "DETAIL" })} 2x,
+            ${cloudinaryUrl(thumbnail, { size: "DETAIL" })} 2x
           `}
         />
 
@@ -62,46 +72,39 @@ const ProductCard = (product: ProductTypes) => {
         )}
       </div>
 
-      {/* Content */}
-      <CardContent className="flex flex-1 flex-col justify-between gap-3 p-4">
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug">
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="h-[2.75rem] overflow-hidden text-sm font-medium leading-snug">
           {product.title}
         </h3>
 
-        <div className="flex items-center gap-2">
+        <div className="mt-2 flex h-[28px] items-center gap-2">
           {discountPrice && (
             <span className="text-xs text-muted-foreground line-through">
               ₹{price.toLocaleString("en-IN")}
             </span>
           )}
-
           <span className="text-lg font-semibold">
             ₹{(discountPrice ?? price).toLocaleString("en-IN")}
           </span>
         </div>
 
-        <div className="flex gap-2 pt-2">
+        <div className="mt-auto flex h-[40px] gap-2 pt-3">
           <Button
             size="icon"
-            aria-label="Update Cart Items"
             disabled={product.stock === 0 || isUpdating}
             onClick={() => updateCartItemQuantity(product.id, 1)}
           >
             <ShoppingCart className="h-4 w-4" />
           </Button>
 
-          <Link
-            to={`/products/${product.slug}`}
-            aria-label="View Product Details"
-            className="flex-1"
-          >
+          <Link to={`/products/${product.slug}`} className="flex-1">
             <Button variant="outline" className="w-full">
               View Details
             </Button>
           </Link>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

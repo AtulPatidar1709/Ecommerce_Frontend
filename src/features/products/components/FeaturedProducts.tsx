@@ -16,6 +16,7 @@ export const ProductSlider = ({
     speed: 500,
     slidesToScroll: 1,
     slidesToShow: 3,
+    arrows: true,
     responsive: [
       { breakpoint: 1280, settings: { slidesToShow: 3 } },
       { breakpoint: 1024, settings: { slidesToShow: 2 } },
@@ -27,19 +28,21 @@ export const ProductSlider = ({
   if (isLoading) return <Loader_Skeleton />;
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-10 overflow-hidden">
+    <section className="mx-auto max-w-6xl px-4 py-10">
       {/* Header */}
       <div className="mb-5">
-        <h2 className="font-bold text-xl">POPULAR PRODUCTS</h2>
-        <div className="h-0.5 bg-red-200 w-full mt-2" />
+        <h2 className="text-xl font-bold">POPULAR PRODUCTS</h2>
+        <div className="mt-2 h-0.5 w-full bg-red-200" />
       </div>
 
-      {/* Centered Slider */}
-      <Slider {...settings} className="-mx-3 flex justify-start">
+      {/* Slider */}
+      <Slider {...settings} className="-mx-3">
         {items.map((item) => (
-          <div key={item.id} className="flex my-2 justify-center px-3">
-            {/* Map only the props that ProductCard needs */}
-            <ProductCard {...item} />
+          <div key={item.id} className="h-full px-3">
+            {/* 👇 CRITICAL */}
+            <div className="h-full">
+              <ProductCard {...item} />
+            </div>
           </div>
         ))}
       </Slider>

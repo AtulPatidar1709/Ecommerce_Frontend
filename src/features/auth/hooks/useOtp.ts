@@ -8,7 +8,7 @@ export const useOtp = () => {
   const navigate = useNavigate();
 
   const verifyOtpMutation = useMutation({
-    mutationFn: otpApi.verifyOtp, // (otp: string) => Promise<...>
+    mutationFn: otpApi.verifyOtp,
     onSuccess: (data) => {
       toast.success(data.message ?? "OTP verified successfully");
       navigate("/");

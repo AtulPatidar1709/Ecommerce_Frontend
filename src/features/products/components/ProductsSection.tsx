@@ -11,20 +11,25 @@ const ProductsSection = ({
   isLoading: boolean;
 }) => {
   if (isLoading) return <Loader_Skeleton />;
+
   return (
-    <section className="max-w-6xl mx-auto px-4 py-10 overflow-hidden">
-      {/* Header */}
+    <section className="mx-auto max-w-6xl px-4 py-10">
       <div className="mb-5">
-        <div className="flex justify-between px-2">
-          <h2 className="font-bold text-xl">PRODUCTS</h2>
-          <Link to={"/products/"}>See All Products</Link>
+        <div className="flex items-center justify-between px-2">
+          <h2 className="text-xl font-bold">PRODUCTS</h2>
+          <Link
+            to="/products"
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            See All Products
+          </Link>
         </div>
-        <div className="h-0.5 bg-red-200 w-full mt-2" />
+        <div className="mt-2 h-0.5 w-full bg-red-200" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         {items.map((item) => (
-          <div key={item.id} className="flex my-2 justify-center px-3">
+          <div key={item.id} className="h-full">
             <ProductCard {...item} />
           </div>
         ))}
