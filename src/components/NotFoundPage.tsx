@@ -6,10 +6,8 @@ export default function NotFoundPage() {
     <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 py-5 md:grid-cols-2">
       <div className="space-y-6">
         <div className="space-y-2 text-center md:text-left">
-          <span className="font-semibold uppercase text-muted-foreground">
-            404
-          </span>
-          <h1 className="text-2xl font-bold tracking-tight">Page not found</h1>
+          <span className="-semibold uppercase text-muted-foreground">404</span>
+          <h1 className="text-2xl -bold tracking-tight">Page not found</h1>
           <p className="text-balance text-base text-muted-foreground">
             If you typed the URL directly, please make sure the spelling is
             correct.

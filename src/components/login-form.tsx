@@ -108,12 +108,17 @@ export function LoginForm({
                 <Field>
                   <Button
                     type="submit"
+                    aria-label="Login"
                     disabled={isLoginLoading ? true : false}
                   >
                     Login
                   </Button>
 
-                  <Button variant="outline" type="button">
+                  <Button
+                    aria-label="Login With Google"
+                    variant="outline"
+                    type="button"
+                  >
                     Login with Google
                   </Button>
 

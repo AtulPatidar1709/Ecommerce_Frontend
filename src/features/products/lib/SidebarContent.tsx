@@ -59,9 +59,7 @@ const SidebarContent = ({
             updateFilters({ ...filters, search: e.target.value })
           }
         />
-
         {/* Sorting Section  */}
-
         <Select
           value={filters.sort}
           onValueChange={(value) =>
@@ -122,8 +120,12 @@ const SidebarContent = ({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-
-        <Button variant="secondary" className="w-full" onClick={resetFilters}>
+        <Button
+          variant="secondary"
+          className="w-full"
+          aria-label="reset filters"
+          onClick={resetFilters}
+        >
           Reset Filters
         </Button>
       </CardContent>

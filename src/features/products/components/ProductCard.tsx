@@ -5,9 +5,10 @@ import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ProductTypes } from "@/features/products/schemas/product.schema";
 import { useUpdateCartItems } from "@/features/cart/hooks/cart.hook";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 
 const ProductCard = (product: ProductTypes) => {
-  const thumbnail = product.images?.[0]?.imageUrl;
+  const thumbnail = product.images?.[0]?.publicId;
 
   const price = product.price;
   const discountPrice =
@@ -33,7 +34,7 @@ const ProductCard = (product: ProductTypes) => {
       {/* Image Wrapper — FIXED HEIGHT */}
       <div className="relative aspect-auto w-full bg-muted">
         <img
-          src={thumbnail}
+          src={cloudinaryUrl(thumbnail, { size: "THUMB" })}
           alt={product.title}
           loading="lazy"
           className="
@@ -45,6 +46,11 @@ const ProductCard = (product: ProductTypes) => {
             duration-300
             group-hover:scale-105
           "
+          aria-label={`Category Banner - ${product.title}`}
+          srcSet={`
+            ${cloudinaryUrl(thumbnail, { size: "GRID" })} 1x,
+            ${cloudinaryUrl(thumbnail, { size: "DETAIL" })} 2x,
+          `}
         />
 
         {product.stock === 0 && (
@@ -77,13 +83,18 @@ const ProductCard = (product: ProductTypes) => {
         <div className="flex gap-2 pt-2">
           <Button
             size="icon"
+            aria-label="Update Cart Items"
             disabled={product.stock === 0 || isUpdating}
             onClick={() => updateCartItemQuantity(product.id, 1)}
           >
             <ShoppingCart className="h-4 w-4" />
           </Button>
 
-          <Link to={`/products/${product.slug}`} className="flex-1">
+          <Link
+            to={`/products/${product.slug}`}
+            aria-label="View Product Details"
+            className="flex-1"
+          >
             <Button variant="outline" className="w-full">
               View Details
             </Button>

@@ -191,7 +191,11 @@ const AddressForm: React.FC<AddressFormProps> = ({
 
                 {/* Submit */}
                 <div className="md:col-span-2">
-                  <Button type="submit" className="w-full">
+                  <Button
+                    aria-label="Update Address"
+                    type="submit"
+                    className="w-full"
+                  >
                     {isUpdate ? "Update Address" : "Create Address"}
                   </Button>
                 </div>

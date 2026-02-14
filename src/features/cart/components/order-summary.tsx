@@ -117,6 +117,7 @@ export function OrderSummary({ subtotal }: OrderSummaryProps) {
         />
         <Button
           variant="outline"
+          aria-label="Apply Coupon"
           onClick={() => applyCoupon(couponCode, subtotal)}
           disabled={!!appliedCouponCode}
         >

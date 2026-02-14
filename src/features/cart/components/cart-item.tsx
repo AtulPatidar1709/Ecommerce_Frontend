@@ -1,5 +1,6 @@
 // components/cart/cart-item.tsx
 import { Button } from "@/components/ui/button";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 import { Minus, Plus, Trash } from "lucide-react";
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
     product: {
       discountPrice: number;
       images: {
-        imageUrl: string;
+        publicId: string;
       }[];
       price: number;
       title: string;
@@ -33,11 +34,10 @@ export function CartItem({
   return (
     <div className="flex gap-4 rounded-xl bg-gradient-to-r from-gray-200 via-gray-100 to-pink-100 p-4">
       <img
-        src={item.product.images[0]?.imageUrl}
+        src={cloudinaryUrl(item.product.images[0].publicId, { size: "GRID" })}
         alt={item.product.title}
         className="h-24 w-24 rounded-lg object-cover"
       />
-
       <div className="flex flex-1 flex-col justify-between">
         <div className="flex justify-between">
           <div>
@@ -57,6 +57,7 @@ export function CartItem({
               size="icon"
               variant="outline"
               onClick={onDecrease}
+              aria-label="Decrease Cart Item"
             >
               <Minus size={14} />
             </Button>

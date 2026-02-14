@@ -19,6 +19,7 @@ import {
 import { BsCart3 } from "react-icons/bs";
 import { useUpdateCartItems } from "@/features/cart/hooks/cart.hook";
 import CardSkeleton from "@/components/CardSkeleton";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -37,7 +38,7 @@ const ProductDetails = () => {
 
   const product: ProductDetailsTypes = productDetails;
 
-  const selectedImage = mainImage ?? product.images[0].imageUrl ?? "";
+  const selectedImage = mainImage ?? product.images[0].publicId;
 
   // Calculate discount percentage
   const discountPercentage = Math.round(
@@ -83,8 +84,14 @@ const ProductDetails = () => {
         <div className="flex flex-col gap-4">
           <div className="w-full aspect-4/3 bg-gray-100 rounded-xl overflow-hidden">
             <img
-              src={selectedImage}
+              src={cloudinaryUrl(selectedImage, { size: "DETAIL" })}
               alt={product.title}
+              srcSet={`${cloudinaryUrl(selectedImage, { size: "HERO" })} 1x`}
+              aria-label={`Product Banner - ${product.title}`}
+              width="80"
+              height="80"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
             />
           </div>
@@ -92,14 +99,24 @@ const ProductDetails = () => {
             {product.images.map((img: ImageTypes, idx: number) => (
               <img
                 key={idx}
-                src={img.imageUrl}
+                src={cloudinaryUrl(img.publicId, {
+                  size: "THUMB",
+                })}
+                srcSet={`
+                  ${cloudinaryUrl(img.publicId, { size: "GRID" })} 1x,
+                  ${cloudinaryUrl(img.publicId, { size: "DETAIL" })} 2x,
+                `}
+                width="80"
+                height="80"
+                loading="lazy"
+                decoding="async"
                 alt={`Thumbnail ${idx + 1}`}
                 className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${
-                  mainImage === img.imageUrl
+                  mainImage === img.publicId
                     ? "border-blue-600"
                     : "border-gray-300"
                 }`}
-                onClick={() => setMainImage(img.imageUrl)}
+                onClick={() => setMainImage(img.publicId)}
               />
             ))}
           </div>
@@ -141,6 +158,7 @@ const ProductDetails = () => {
           <p className="text-gray-700 leading-relaxed">{product.description}</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-4">
             <Button
+              aria-label="Update Cart Items"
               onClick={() => updateCartItemQuantity(product.id, 1)}
               size="lg"
               className="flex-1 justify-center"
@@ -150,6 +168,7 @@ const ProductDetails = () => {
               Add to Cart
             </Button>
             <Button
+              aria-label="Add to wishlist"
               variant="outline"
               size="lg"
               className="flex-1 justify-center"

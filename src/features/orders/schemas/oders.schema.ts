@@ -28,7 +28,7 @@ export const getOrderByIdSchema = z.object({
 
 // Product image
 export const ProductImageSchema = z.object({
-  imageUrl: z.string().url(),
+  publicId: z.string(),
 });
 
 // Product
@@ -38,7 +38,7 @@ export const ProductSchema = z.object({
   name: z.string().optional(),
   price: z.number().optional(),
   discountPrice: z.number().optional(),
-  images: z.array(ProductImageSchema).optional(),
+  images: z.array(ProductImageSchema),
   image: z
     .object({
       url: z.string(),
@@ -92,6 +92,7 @@ export const getOrderResponseSchema = z.object({
     id: z.string(),
   }),
 });
+
 // All orders (summary)
 export const getOrdersResponseSchema = z.array(getOrderResponseSchema);
 

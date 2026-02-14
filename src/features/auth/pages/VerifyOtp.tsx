@@ -64,7 +64,7 @@ const VerifyOtp = () => {
               onClick={handleResend}
               disabled={isResending ? true : false}
             >
-              <Button variant="outline" size="xs">
+              <Button aria-label="Resend OTP" variant="outline" size="xs">
                 <RefreshCwIcon />
                 Resend Code
               </Button>
@@ -77,6 +77,7 @@ const VerifyOtp = () => {
             onChange={setOtp}
             id="otp-verification"
             required
+            aria-label="Verify OTP"
           >
             <InputOTPGroup className="*:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:text-xl">
               <InputOTPSlot index={0} />

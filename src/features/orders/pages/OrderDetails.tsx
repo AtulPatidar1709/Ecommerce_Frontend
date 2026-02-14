@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useOrder } from "../hooks/orders.hook";
 import Order_Loader from "@/components/skeletons/Order_Loader";
 import type { OrderItem } from "../schemas/oders.schema";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -23,6 +24,7 @@ export default function OrderDetailsPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
       <Button
+        aria-label="Navigate to Orders"
         variant="outline"
         className="mb-4"
         onClick={() => navigate("/orders")}
@@ -84,7 +86,9 @@ export default function OrderDetailsPage() {
           >
             <div className="flex items-center space-x-4">
               <img
-                src={item.product.images?.[0]?.imageUrl}
+                src={cloudinaryUrl(item.product.images?.[0]?.publicId, {
+                  size: "THUMB",
+                })}
                 alt={item.product.title}
                 className="w-20 h-20 object-cover rounded-md"
               />

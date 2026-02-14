@@ -157,6 +157,7 @@ export function SignupForm({
                 {/* Actions */}
                 <Field>
                   <Button
+                    aria-label="Create Account"
                     disabled={isRegisterLoading ? true : false}
                     type="submit"
                   >

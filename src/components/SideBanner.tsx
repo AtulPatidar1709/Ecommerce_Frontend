@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import type { CreateBannerInput } from "@/features/products/schemas/banner.schema";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 import { Link } from "react-router-dom";
 
 export function SideBanner({
@@ -12,7 +13,16 @@ export function SideBanner({
   return (
     <Card className="overflow-hidden rounded-2xl shadow-lg">
       <CardContent
-        className={`relative flex h-full flex-col justify-between bg-gradient-to-br ${gradient} p-6`}
+        className={`
+          relative
+          flex
+          min-h-[180px]
+          flex-col
+          justify-between
+          bg-gradient-to-br
+          ${gradient}
+          p-6
+        `}
       >
         {/* Text */}
         <div className="z-10">
@@ -33,8 +43,13 @@ export function SideBanner({
         {/* Image */}
         <div className="pointer-events-none absolute bottom-3 right-3">
           <img
-            src={imageUrl}
+            src={cloudinaryUrl(imageUrl, { width: 96 })}
             alt={title}
+            width={96}
+            height={96}
+            loading="lazy"
+            decoding="async"
+            aria-label={`Banner - ${title}`}
             className="
               max-h-24
               w-auto
@@ -44,8 +59,6 @@ export function SideBanner({
               duration-300
               group-hover:scale-105
             "
-            width={600}
-            height={600}
           />
         </div>
       </CardContent>

@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import type { CreateBannerInput } from "@/features/products/schemas/banner.schema";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 import { Link } from "react-router-dom";
 
 export function MainBanner({ banner }: { banner: CreateBannerInput }) {
@@ -31,8 +32,19 @@ export function MainBanner({ banner }: { banner: CreateBannerInput }) {
         {/* Image */}
         <div className="relative hidden md:flex items-center justify-center">
           <img
-            src={imageUrl}
+            src={cloudinaryUrl(imageUrl, { width: 260 })}
+            srcSet={`
+              ${cloudinaryUrl(imageUrl, { width: 260 })} 1x,
+              ${cloudinaryUrl(imageUrl, { width: 520 })} 2x
+            `}
+            sizes="260px"
             alt={title}
+            width={260}
+            height={260}
+            decoding="async"
+            loading="lazy"
+            fetchPriority="high"
+            aria-label={`Banner - ${title}`}
             className="
               max-h-[260px]
               w-auto
@@ -42,8 +54,6 @@ export function MainBanner({ banner }: { banner: CreateBannerInput }) {
               duration-300
               hover:scale-105
             "
-            width={600}
-            height={600}
           />
         </div>
       </div>

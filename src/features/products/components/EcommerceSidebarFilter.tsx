@@ -35,7 +35,11 @@ export default function EcommerceSidebarFilter({
       <div className="lg:hidden mb-4">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" className="gap-2">
+            <Button
+              variant="outline"
+              className="gap-2"
+              aria-label="Toggle-Menu"
+            >
               <Filter size={16} /> Filters
             </Button>
           </SheetTrigger>

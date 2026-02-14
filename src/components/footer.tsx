@@ -1,11 +1,10 @@
 "use client";
-// import { Logo } from "@/components/logo";
 import { Facebook, Instagram, Linkedin, Youtube } from "@aliimam/icons";
 import { motion, useReducedMotion } from "motion/react";
 import type React from "react";
 import type { ComponentProps, ReactNode } from "react";
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.avif";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 
 type FooterLink = {
   title: string;
@@ -64,7 +63,6 @@ export function Footer() {
 
       <div className="grid w-full max-w-7xl gap-8 xl:grid-cols-3 xl:gap-8">
         <AnimatedContainer className="space-y-4">
-          {/* <Logo className="h-4" /> */}
           <div className="flex items-center">
             <Link
               to="/"
@@ -72,14 +70,18 @@ export function Footer() {
               className="flex items-center gap-2 -mr-3"
             >
               <img
-                src={logo}
+                src={cloudinaryUrl("products/Icons/logo_xn5tix", {
+                  size: "ICON",
+                })}
                 alt="Design Logo"
                 height={50}
                 width={50}
                 className="h-10 z-10 w-full hidden dark:block object-contain"
               />
               <img
-                src={logo}
+                src={cloudinaryUrl("products/Icons/logo_xn5tix", {
+                  size: "ICON",
+                })}
                 alt="Design Logo"
                 height={50}
                 width={50}

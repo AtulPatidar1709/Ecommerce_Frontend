@@ -1,8 +1,15 @@
 import Slider from "react-slick";
 import ProductCard from "./ProductCard";
 import type { ProductTypes } from "@/features/products/schemas/product.schema";
+import { Loader_Skeleton } from "@/components/skeletons/Loader_Skeleton";
 
-export const ProductSlider = ({ items }: { items: ProductTypes[] }) => {
+export const ProductSlider = ({
+  items,
+  isLoading,
+}: {
+  items: ProductTypes[];
+  isLoading: boolean;
+}) => {
   const settings = {
     dots: false,
     infinite: true,
@@ -16,6 +23,8 @@ export const ProductSlider = ({ items }: { items: ProductTypes[] }) => {
       { breakpoint: 480, settings: { slidesToShow: 1 } },
     ],
   };
+
+  if (isLoading) return <Loader_Skeleton />;
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-10 overflow-hidden">

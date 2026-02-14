@@ -6,9 +6,11 @@ export const CategorySlider = ({ items }: { items: CreateCategoryInput[] }) => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 0,
     slidesToScroll: 1,
+    cssEase: "linear",
     slidesToShow: 6,
+    adaptiveHeight: false,
     responsive: [
       { breakpoint: 1280, settings: { slidesToShow: 5 } },
       { breakpoint: 1024, settings: { slidesToShow: 4 } },

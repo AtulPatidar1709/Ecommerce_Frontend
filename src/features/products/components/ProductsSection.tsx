@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import type { ProductTypes } from "@/features/products/schemas/product.schema";
+import { Loader_Skeleton } from "@/components/skeletons/Loader_Skeleton";
 
-const ProductsSection = ({ items }: { items: ProductTypes[] }) => {
+const ProductsSection = ({
+  items,
+  isLoading,
+}: {
+  items: ProductTypes[];
+  isLoading: boolean;
+}) => {
+  if (isLoading) return <Loader_Skeleton />;
   return (
     <section className="max-w-6xl mx-auto px-4 py-10 overflow-hidden">
       {/* Header */}

@@ -28,7 +28,7 @@ export const getAllProductsQuerySchema = z.object({
 });
 
 export const ImageSchema = z.object({
-  imageUrl: z.string(),
+  publicId: z.string(),
   isPrimary: z.boolean().optional(),
 });
 

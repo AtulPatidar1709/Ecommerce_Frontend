@@ -6,7 +6,6 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { useScroll } from "motion/react";
 import { Separator } from "@/components/ui/separator";
-import logo from "@/assets/logo.avif";
 import { useUserQuery } from "@/features/auth/hooks/auth.hooks";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -17,6 +16,7 @@ import {
 } from "./ui/dropdown-menu";
 import { useCartDetails } from "@/features/cart/hooks/cart.hook";
 import { CartIcon } from "./CartIcon";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 
 const menuItems = [
   { name: "Products", href: "/products" },
@@ -58,14 +58,18 @@ export const Header = () => {
                 className="flex gap-2 -mr-3 whitespace-nowrap items-center"
               >
                 <img
-                  src={logo}
+                  src={cloudinaryUrl("products/Icons/logo_xn5tix", {
+                    size: "ICON",
+                  })}
                   alt="Design Logo"
                   height={50}
                   width={50}
                   className="h-10 z-10 w-full hidden dark:block object-contain"
                 />
                 <img
-                  src={logo}
+                  src={cloudinaryUrl("products/Icons/logo_xn5tix", {
+                    size: "ICON",
+                  })}
                   alt="Design Logo"
                   height={50}
                   width={50}

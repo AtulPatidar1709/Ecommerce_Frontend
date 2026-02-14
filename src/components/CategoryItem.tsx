@@ -1,6 +1,7 @@
 import type { CreateCategoryInput } from "@/features/category/schemas/category.schema";
 import { Card } from "./ui/card";
 import { useNavigate } from "react-router-dom";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 
 export const CategoryItem = ({
   name = "Default Category",
@@ -22,9 +23,14 @@ export const CategoryItem = ({
       <Card className="rounded-full border-none shadow-md hover:shadow-lg transition-all duration-300 w-28 h-28 flex items-center justify-center bg-white">
         {imageUrl ? (
           <img
-            src={imageUrl}
+            src={cloudinaryUrl(imageUrl, { size: "ICON" })}
             alt={name}
+            width="80"
+            height="80"
+            loading="lazy"
+            decoding="async"
             className="w-20 h-20 object-contain rounded-full"
+            aria-label={`Category Banner - ${name}`}
           />
         ) : (
           <span className="text-lg font-semibold text-gray-700 text-center">
